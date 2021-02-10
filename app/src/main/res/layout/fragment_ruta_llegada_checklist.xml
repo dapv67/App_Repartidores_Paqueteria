@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/gral"
+    tools:context=".RutaLlegadaChecklistFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:entries="@array/gasolina" />
+
+        <EditText
+            android:id="@+id/editTextNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="KM en el tablero"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Checklist de la unidad" />
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="330dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/checkBox17"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Techo" />
+
+                <CheckBox
+                    android:id="@+id/checkBox18"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Puertas" />
+
+                <CheckBox
+                    android:id="@+id/checkBox19"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Vidrios" />
+
+                <CheckBox
+                    android:id="@+id/checkBox20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Defensa" />
+
+                <CheckBox
+                    android:id="@+id/checkBox21"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Fascia" />
+
+                <CheckBox
+                    android:id="@+id/checkBox22"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Faros" />
+
+                <CheckBox
+                    android:id="@+id/checkBox23"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Retrovisores" />
+                <CheckBox
+                    android:id="@+id/checkBox24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Manijas de camper" />
+
+                <CheckBox
+                    android:id="@+id/checkBox25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Asientos" />
+
+                <CheckBox
+                    android:id="@+id/checkBox26"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tablero" />
+
+            </LinearLayout>
+        </ScrollView>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btn_checkLlegadaRuta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CHECK" />
+
+    </LinearLayout>
+
+</FrameLayout>

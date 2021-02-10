@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="logisticdelsur.com.mx.logisticgps.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="logisticdelsur.com.mx.logisticgps.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_rutaFragment"
+            app:destination="@id/rutaFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_entregasFragment"
+            app:destination="@id/entregasFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rutaFragment"
+        android:name="logisticdelsur.com.mx.logisticgps.RutaFragment"
+        android:label="fragment_ruta"
+        tools:layout="@layout/fragment_ruta" >
+        <action
+            android:id="@+id/action_rutaFragment_to_rutaSalidaChecklistFragment"
+            app:destination="@id/rutaSalidaChecklistFragment" />
+        <action
+            android:id="@+id/action_rutaFragment_to_rutaLlegadaChecklistFragment"
+            app:destination="@id/rutaLlegadaChecklistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/entregasFragment"
+        android:name="logisticdelsur.com.mx.logisticgps.EntregasFragment"
+        android:label="fragment_entregas"
+        tools:layout="@layout/fragment_entregas" >
+        <action
+            android:id="@+id/action_entregasFragment_to_entregasPendientesFragment"
+            app:destination="@id/entregasPendientesFragment" />
+        <action
+            android:id="@+id/action_entregasFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/entregasPendientesFragment"
+        android:name="logisticdelsur.com.mx.logisticgps.EntregasPendientesFragment"
+        android:label="fragment_entregas_pendientes"
+        tools:layout="@layout/fragment_entregas_pendientes" >
+
+        <action
+            android:id="@+id/action_entregasPendientesFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rutaLlegadaChecklistFragment"
+        android:name="logisticdelsur.com.mx.logisticgps.RutaLlegadaChecklistFragment"
+        android:label="fragment_ruta_llegada_checklist"
+        tools:layout="@layout/fragment_ruta_llegada_checklist" >
+        <action
+            android:id="@+id/action_rutaLlegadaChecklistFragment_to_rutaMantenimientoFragment"
+            app:destination="@id/rutaMantenimientoFragment" />
+        <action
+            android:id="@+id/action_rutaLlegadaChecklistFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rutaMantenimientoFragment"
+        android:name="logisticdelsur.com.mx.logisticgps.RutaMantenimientoFragment"
+        android:label="fragment_ruta_mantenimiento"
+        tools:layout="@layout/fragment_ruta_mantenimiento" >
+
+        <action
+            android:id="@+id/action_rutaMantenimientoFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rutaSalidaFragment"
+        android:name="logisticdelsur.com.mx.logisticgps.RutaSalidaFragment"
+        android:label="fragment_ruta_salida"
+        tools:layout="@layout/fragment_ruta_salida" >
+
+        <action
+            android:id="@+id/action_rutaSalidaFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rutaSalidaChecklistFragment"
+        android:name="logisticdelsur.com.mx.logisticgps.RutaSalidaChecklistFragment"
+        android:label="fragment_ruta_salida_checklist"
+        tools:layout="@layout/fragment_ruta_salida_checklist" >
+        <action
+            android:id="@+id/action_rutaSalidaChecklistFragment_to_rutaSalidaFragment"
+            app:destination="@id/rutaSalidaFragment" />
+    </fragment>
+
+</navigation>

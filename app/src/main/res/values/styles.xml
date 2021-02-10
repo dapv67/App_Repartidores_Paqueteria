@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="btn">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="input">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:ems">10</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+    <style name="gral">
+        <item name="android:padding">16dp</item>
+        <item name="android:background">#FFFFFF</item>
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="scroll_text">
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+</resources>

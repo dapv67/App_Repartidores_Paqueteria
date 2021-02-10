@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/gral"
+    tools:context=".RutaSalidaFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/button3"
+            style="@style/btn"
+            android:layout_marginTop="40dp"
+            android:text="Escanear" />
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Paquetes: 7"
+            android:textSize="20sp" />
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="340dp"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/scroll_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_delete"
+                    android:text="127635123126735" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    style="@style/scroll_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_delete"
+                    android:text="127635123126735" />
+
+            </LinearLayout>
+        </ScrollView>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/btn_registrarSalidaRuta"
+            style="@style/btn"
+            android:layout_marginTop="16dp"
+            android:text="Registrar" />
+    </LinearLayout>
+
+</FrameLayout>
