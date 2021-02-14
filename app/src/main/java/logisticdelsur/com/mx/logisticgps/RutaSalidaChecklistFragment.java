@@ -11,6 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +34,13 @@ public class RutaSalidaChecklistFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Spinner spinnerRutaSalida, spinnerTransporteSalida;
+    private Button btnRegistrarCheckSalida;
+    private CheckBox[] checkBox = new CheckBox[26];
+
+    private List<String> listaCheckboxes = new ArrayList<>();
+    private Map<Integer, String> parametrosSalida = new HashMap<>();
 
     public RutaSalidaChecklistFragment() {
         // Required empty public constructor
@@ -59,6 +73,21 @@ public class RutaSalidaChecklistFragment extends Fragment {
         }
     }
 
+    private View.OnClickListener btnRegistrarCheckSalidaHandler = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            listaCheckboxes.clear();
+                for(int i=0; i<checkBox.length; i++){
+                    if (checkBox[i].isChecked()) {
+                        listaCheckboxes.add(parametrosSalida.get(i));
+                    }
+                }
+                // call api
+
+            Navigation.findNavController(view).navigate(R.id.action_rutaSalidaChecklistFragment_to_rutaSalidaFragment);
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,12 +97,67 @@ public class RutaSalidaChecklistFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button btnCheckSalida = view.findViewById(R.id.btn_checkSalidaRuta);
-        btnCheckSalida.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_rutaSalidaChecklistFragment_to_rutaSalidaFragment);
-            }
-        });
+        createHashMap();
+        btnRegistrarCheckSalida = view.findViewById(R.id.btn_checkSalidaRuta);
+        btnRegistrarCheckSalida.setOnClickListener(btnRegistrarCheckSalidaHandler);
+        spinnerRutaSalida = view.findViewById(R.id.spinnerNivelGasolina);
+        spinnerTransporteSalida = view.findViewById(R.id.spinnerTransporteSalida);
+
+        checkBox[0] = view.findViewById(R.id.checkBox);
+        checkBox[1] = view.findViewById(R.id.checkBox2);
+        checkBox[2] = view.findViewById(R.id.checkBox3);
+        checkBox[3] = view.findViewById(R.id.checkBox4);
+        checkBox[4] = view.findViewById(R.id.checkBox5);
+        checkBox[5] = view.findViewById(R.id.checkBox6);
+        checkBox[6] = view.findViewById(R.id.checkBox7);
+        checkBox[7] = view.findViewById(R.id.checkBox8);
+        checkBox[8] = view.findViewById(R.id.checkBox9);
+        checkBox[9] = view.findViewById(R.id.checkBox10);
+        checkBox[10] = view.findViewById(R.id.checkBox11);
+        checkBox[11] = view.findViewById(R.id.checkBox12);
+        checkBox[12] = view.findViewById(R.id.checkBox13);
+        checkBox[13] = view.findViewById(R.id.checkBox14);
+        checkBox[14] = view.findViewById(R.id.checkBox15);
+        checkBox[15] = view.findViewById(R.id.checkBox16);
+        checkBox[16] = view.findViewById(R.id.checkBox17);
+        checkBox[17] = view.findViewById(R.id.checkBox18);
+        checkBox[18] = view.findViewById(R.id.checkBox19);
+        checkBox[19] = view.findViewById(R.id.checkBox20);
+        checkBox[20] = view.findViewById(R.id.checkBox21);
+        checkBox[21] = view.findViewById(R.id.checkBox22);
+        checkBox[22] = view.findViewById(R.id.checkBox23);
+        checkBox[23] = view.findViewById(R.id.checkBox24);
+        checkBox[24] = view.findViewById(R.id.checkBox25);
+        checkBox[25] = view.findViewById(R.id.checkBox26);
+
+    }
+
+    public void createHashMap(){
+        parametrosSalida.put(0, "Agua en tanque de recuperación");
+        parametrosSalida.put(1, "Luces generales");
+        parametrosSalida.put(2, "Liquido de frenos");
+        parametrosSalida.put(3, "Aceite de motor");
+        parametrosSalida.put(4, "Nivel de agua en radiador");
+        parametrosSalida.put(5, "Agua en tanque de parabrisas");
+        parametrosSalida.put(6, "Hules de limpia parabrisas");
+        parametrosSalida.put(7, "Presión de llantas");
+        parametrosSalida.put(8, "Aditamientos");
+        parametrosSalida.put(9, "Accesorios");
+        parametrosSalida.put(10, "Cruceta");
+        parametrosSalida.put(11, "Gato");
+        parametrosSalida.put(12, "Extintor");
+        parametrosSalida.put(13, "Llantas de refacción");
+        parametrosSalida.put(14, "Candado");
+        parametrosSalida.put(15, "Limpieza general de unidad");
+        parametrosSalida.put(16, "Techo");
+        parametrosSalida.put(17, "Puertas");
+        parametrosSalida.put(18, "Vidrios");
+        parametrosSalida.put(19, "Defensa");
+        parametrosSalida.put(20, "Fascia");
+        parametrosSalida.put(21, "Faros");
+        parametrosSalida.put(22, "Retrovisores");
+        parametrosSalida.put(23, "Manijas de camper");
+        parametrosSalida.put(24, "Asientos");
+        parametrosSalida.put(25, "Tablero");
     }
 }

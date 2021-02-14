@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +32,11 @@ public class RutaLlegadaChecklistFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Spinner spinnerNivelGasolina;
+    private EditText txtKMLlegada;
+    private CheckBox[] checkBoxes = new CheckBox[26];
+    private Button btnCheckLlegada;
 
     public RutaLlegadaChecklistFragment() {
         // Required empty public constructor
@@ -70,7 +78,11 @@ public class RutaLlegadaChecklistFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button btnCheckLlegada = view.findViewById(R.id.btn_checkLlegadaRuta);
+
+        spinnerNivelGasolina = view.findViewById(R.id.spinnerNivelGasolina);
+        txtKMLlegada = view.findViewById(R.id.txtKMLlegada);
+
+        btnCheckLlegada = view.findViewById(R.id.btn_checkLlegadaRuta);
         btnCheckLlegada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
