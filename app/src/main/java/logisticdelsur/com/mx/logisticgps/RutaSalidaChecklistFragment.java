@@ -10,14 +10,24 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import logisticdelsur.com.mx.adaptadores.SpinAdapterCustom;
+import logisticdelsur.com.mx.adaptadores.SpinAdapterRuta;
+import logisticdelsur.com.mx.api.modelo.Ruta;
+import logisticdelsur.com.mx.adaptadores.SpinAdapterTransporte;
+import logisticdelsur.com.mx.api.modelo.Transporte;
+import logisticdelsur.com.mx.api.modelo.Vector;
+import logisticdelsur.com.mx.api.services.ServiceHandler;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,12 +45,18 @@ public class RutaSalidaChecklistFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private Spinner spinnerRutaSalida, spinnerTransporteSalida;
-    private Button btnRegistrarCheckSalida;
-    private CheckBox[] checkBox = new CheckBox[26];
+    private Spinner                        spinnerRutaSalida       ;
+    private Spinner                        spinnerTransporteSalida ;
+    private Button                         btnRegistrarCheckSalida ;
+    private CheckBox[]                     checkBox                ;
 
-    private List<String> listaCheckboxes = new ArrayList<>();
-    private Map<Integer, String> parametrosSalida = new HashMap<>();
+    private List<String>                   listaCheckboxes         ;
+    private Map<Integer, String>           parametrosSalida        ;
+    private List<Transporte>               transportesData         ;
+    private List<Ruta>                     rutaData                ;
+    private ArrayAdapter<Transporte>       transportesAdaptador    ;
+    private ArrayAdapter<Ruta>             rutaAdaptador           ;
+    private ServiceHandler                 api                     ;
 
     public RutaSalidaChecklistFragment() {
         // Required empty public constructor
@@ -83,6 +99,7 @@ public class RutaSalidaChecklistFragment extends Fragment {
                     }
                 }
                 // call api
+            Toast.makeText(getContext(), listaCheckboxes.toString(), Toast.LENGTH_SHORT).show();
 
             Navigation.findNavController(view).navigate(R.id.action_rutaSalidaChecklistFragment_to_rutaSalidaFragment);
         }
@@ -97,22 +114,52 @@ public class RutaSalidaChecklistFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        transportesData      = new ArrayList<>();
+        rutaData             = new ArrayList<>();
+        parametrosSalida     = new HashMap<>();
+        listaCheckboxes      = new ArrayList<>();
+        checkBox             = new CheckBox[26] ;
+        api                  = new ServiceHandler();
+        transportesAdaptador = new SpinAdapterTransporte(getContext(),
+                                                         android.R.layout.simple_dropdown_item_1line,
+                                                         transportesData);
+        rutaAdaptador        = new SpinAdapterRuta(getContext(),
+                                                  android.R.layout.simple_dropdown_item_1line,
+                                                  rutaData);
+
+        // OBTENER DATOS DE LA API
+        //transportesData     .addAll(api.getTransportes());
+        //transportesAdaptador.notifyDataSetChanged();
+        //rutaData            .addAll(api.getRutas());
+        //rutaAdaptador       .notifyDataSetChanged();
+
+
         createHashMap();
+
         btnRegistrarCheckSalida = view.findViewById(R.id.btn_checkSalidaRuta);
-        btnRegistrarCheckSalida.setOnClickListener(btnRegistrarCheckSalidaHandler);
-        spinnerRutaSalida = view.findViewById(R.id.spinnerNivelGasolina);
+        spinnerRutaSalida       = view.findViewById(R.id.spinnerNivelGasolina);
         spinnerTransporteSalida = view.findViewById(R.id.spinnerTransporteSalida);
 
-        checkBox[0] = view.findViewById(R.id.checkBox);
-        checkBox[1] = view.findViewById(R.id.checkBox2);
-        checkBox[2] = view.findViewById(R.id.checkBox3);
-        checkBox[3] = view.findViewById(R.id.checkBox4);
-        checkBox[4] = view.findViewById(R.id.checkBox5);
-        checkBox[5] = view.findViewById(R.id.checkBox6);
-        checkBox[6] = view.findViewById(R.id.checkBox7);
-        checkBox[7] = view.findViewById(R.id.checkBox8);
-        checkBox[8] = view.findViewById(R.id.checkBox9);
-        checkBox[9] = view.findViewById(R.id.checkBox10);
+        btnRegistrarCheckSalida.setOnClickListener(btnRegistrarCheckSalidaHandler);
+        spinnerTransporteSalida.setAdapter(transportesAdaptador);
+        spinnerRutaSalida      .setAdapter(rutaAdaptador);
+
+        crearCheckBoxes(view);
+
+    }
+
+    public void crearCheckBoxes(View view){
+        checkBox[0]  = view.findViewById(R.id.checkBox);
+        checkBox[1]  = view.findViewById(R.id.checkBox2);
+        checkBox[2]  = view.findViewById(R.id.checkBox3);
+        checkBox[3]  = view.findViewById(R.id.checkBox4);
+        checkBox[4]  = view.findViewById(R.id.checkBox5);
+        checkBox[5]  = view.findViewById(R.id.checkBox6);
+        checkBox[6]  = view.findViewById(R.id.checkBox7);
+        checkBox[7]  = view.findViewById(R.id.checkBox8);
+        checkBox[8]  = view.findViewById(R.id.checkBox9);
+        checkBox[9]  = view.findViewById(R.id.checkBox10);
         checkBox[10] = view.findViewById(R.id.checkBox11);
         checkBox[11] = view.findViewById(R.id.checkBox12);
         checkBox[12] = view.findViewById(R.id.checkBox13);
@@ -129,7 +176,6 @@ public class RutaSalidaChecklistFragment extends Fragment {
         checkBox[23] = view.findViewById(R.id.checkBox24);
         checkBox[24] = view.findViewById(R.id.checkBox25);
         checkBox[25] = view.findViewById(R.id.checkBox26);
-
     }
 
     public void createHashMap(){

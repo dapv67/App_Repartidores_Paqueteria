@@ -16,6 +16,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import logisticdelsur.com.mx.api.services.ServiceHandler;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,10 +41,14 @@ public class RutaLlegadaChecklistFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private Spinner spinnerNivelGasolina;
-    private EditText txtKMLlegada;
-    private CheckBox[] checkBoxes = new CheckBox[26];
-    private Button btnCheckLlegada;
+    private Spinner    spinnerNivelGasolina;
+    private EditText   txtKMLlegada        ;
+    private CheckBox[] checkBox            ;
+    private Button     btnCheckLlegada     ;
+
+    private List<String>         listaCheckboxes ;
+    private Map<Integer, String> parametrosSalida;
+    private ServiceHandler       api             ;
 
     public RutaLlegadaChecklistFragment() {
         // Required empty public constructor
@@ -69,6 +81,35 @@ public class RutaLlegadaChecklistFragment extends Fragment {
         }
     }
 
+    private View.OnClickListener btnRegistrarCheckLlegadaHandler = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            //api.registrarLlegada(nivelGasolina,KM,listaCheckboxes.toString());
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Programación de mantenimientos");
+            builder.setMessage("¿Quieres programar un mantenimiento?");
+
+            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //api.registrarMantenimiento();
+                    Navigation.findNavController(view).navigate(R.id.action_rutaLlegadaChecklistFragment_to_rutaMantenimientoFragment);
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Navigation.findNavController(view).navigate(R.id.action_rutaLlegadaChecklistFragment_to_homeFragment);
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,33 +120,44 @@ public class RutaLlegadaChecklistFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        spinnerNivelGasolina = view.findViewById(R.id.spinnerNivelGasolina);
-        txtKMLlegada = view.findViewById(R.id.txtKMLlegada);
+        listaCheckboxes  = new ArrayList<>();
+        parametrosSalida = new HashMap<>();
+        checkBox         = new CheckBox[26];
 
-        btnCheckLlegada = view.findViewById(R.id.btn_checkLlegadaRuta);
-        btnCheckLlegada.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Programación de mantenimientos");
-                builder.setMessage("¿Quieres programar un mantenimiento?");
+        spinnerNivelGasolina = view.findViewById(R.id.spinnerNivelGasolina)      ;
+        txtKMLlegada         = view.findViewById(R.id.txtKMLlegada)              ;
+        btnCheckLlegada      = view.findViewById(R.id.btn_checkLlegadaRuta)      ;
+        btnCheckLlegada      .setOnClickListener(btnRegistrarCheckLlegadaHandler);
 
-                builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Navigation.findNavController(v).navigate(R.id.action_rutaLlegadaChecklistFragment_to_rutaMantenimientoFragment);
-                    }
-                });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Navigation.findNavController(v).navigate(R.id.action_rutaLlegadaChecklistFragment_to_homeFragment);
-                    }
-                });
+        crearCheckBoxes(view);
+    }
 
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
+    public void crearCheckBoxes(View view){
+        checkBox[0]  = view.findViewById(R.id.checkBox);
+        checkBox[1]  = view.findViewById(R.id.checkBox2);
+        checkBox[2]  = view.findViewById(R.id.checkBox3);
+        checkBox[3]  = view.findViewById(R.id.checkBox4);
+        checkBox[4]  = view.findViewById(R.id.checkBox5);
+        checkBox[5]  = view.findViewById(R.id.checkBox6);
+        checkBox[6]  = view.findViewById(R.id.checkBox7);
+        checkBox[7]  = view.findViewById(R.id.checkBox8);
+        checkBox[8]  = view.findViewById(R.id.checkBox9);
+        checkBox[9]  = view.findViewById(R.id.checkBox10);
+        checkBox[10] = view.findViewById(R.id.checkBox11);
+        checkBox[11] = view.findViewById(R.id.checkBox12);
+        checkBox[12] = view.findViewById(R.id.checkBox13);
+        checkBox[13] = view.findViewById(R.id.checkBox14);
+        checkBox[14] = view.findViewById(R.id.checkBox15);
+        checkBox[15] = view.findViewById(R.id.checkBox16);
+        checkBox[16] = view.findViewById(R.id.checkBox17);
+        checkBox[17] = view.findViewById(R.id.checkBox18);
+        checkBox[18] = view.findViewById(R.id.checkBox19);
+        checkBox[19] = view.findViewById(R.id.checkBox20);
+        checkBox[20] = view.findViewById(R.id.checkBox21);
+        checkBox[21] = view.findViewById(R.id.checkBox22);
+        checkBox[22] = view.findViewById(R.id.checkBox23);
+        checkBox[23] = view.findViewById(R.id.checkBox24);
+        checkBox[24] = view.findViewById(R.id.checkBox25);
+        checkBox[25] = view.findViewById(R.id.checkBox26);
     }
 }

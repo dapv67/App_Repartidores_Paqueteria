@@ -28,6 +28,13 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.ArrayList;
 import java.util.List;
 
+import logisticdelsur.com.mx.api.services.ServiceHandler;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link RutaSalidaFragment#newInstance} factory method to
@@ -44,12 +51,13 @@ public class RutaSalidaFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private Button btnEscanear, btnRegistrarPaquetes;
-    private TextView txtTotalPaquetes;
-    private ListView listViewPaquetes;
-    private ArrayAdapter<String> adaptador;
+    private Button               btnEscanear, btnRegistrarPaquetes;
+    private TextView             txtTotalPaquetes                 ;
+    private ListView             listViewPaquetes                 ;
+    private ArrayAdapter<String> adaptador                        ;
 
-    private List<String> listaPaquetes = new ArrayList<>();
+    private ServiceHandler       api                              ;
+    private List<String>         listaPaquetes = new ArrayList<>();
 
     public RutaSalidaFragment() {
         // Required empty public constructor
@@ -89,10 +97,10 @@ public class RutaSalidaFragment extends Fragment {
             if(result.getContents() == null) {
                 Toast.makeText(getContext(), "Cancelado", Toast.LENGTH_LONG).show();
             } else {
-                listaPaquetes.add(result.getContents());
-                adaptador = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,listaPaquetes);
-                listViewPaquetes.setAdapter(adaptador);
-                txtTotalPaquetes.setText( "Paquetes: " + listaPaquetes.size());
+                listaPaquetes    .add(result.getContents());
+                adaptador        = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,listaPaquetes);
+                listViewPaquetes .setAdapter(adaptador);
+                txtTotalPaquetes .setText( "Paquetes: " + listaPaquetes.size());
 
                 Toast.makeText(getContext(), "Escaneado : " + result.getContents(), Toast.LENGTH_LONG).show();
             }
@@ -149,6 +157,7 @@ public class RutaSalidaFragment extends Fragment {
         @Override
         public void onClick(View view) {
             // call Api
+            //api.registrarPaquetes(listaPaquetes);
         }
     };
 
@@ -169,13 +178,13 @@ public class RutaSalidaFragment extends Fragment {
             }
         });
 
-        btnEscanear = view.findViewById(R.id.btnEscanear);
-        txtTotalPaquetes   = view.findViewById(R.id.txtTotalPaquetes);
-        listViewPaquetes = view.findViewById(R.id.listRegistrarPaquetes);
+        btnEscanear          = view.findViewById(R.id.btnEscanear);
+        txtTotalPaquetes     = view.findViewById(R.id.txtTotalPaquetes);
+        listViewPaquetes     = view.findViewById(R.id.listRegistrarPaquetes);
         btnRegistrarPaquetes = view.findViewById(R.id.btn_registrarSalidaRuta);
 
-        btnEscanear.setOnClickListener(btnEscanearHandler);
-        listViewPaquetes.setOnItemClickListener(listViewEliminarHandler);
-        btnRegistrarPaquetes.setOnClickListener(btnRegistrarPaquetesHandler);
+        btnEscanear          .setOnClickListener(btnEscanearHandler);
+        listViewPaquetes     .setOnItemClickListener(listViewEliminarHandler);
+        btnRegistrarPaquetes .setOnClickListener(btnRegistrarPaquetesHandler);
     }
 }
