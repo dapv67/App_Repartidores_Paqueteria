@@ -21,12 +21,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import logisticdelsur.com.mx.adaptadores.SpinAdapterCustom;
 import logisticdelsur.com.mx.adaptadores.SpinAdapterRuta;
 import logisticdelsur.com.mx.api.modelo.Ruta;
 import logisticdelsur.com.mx.adaptadores.SpinAdapterTransporte;
 import logisticdelsur.com.mx.api.modelo.Transporte;
-import logisticdelsur.com.mx.api.modelo.Vector;
 import logisticdelsur.com.mx.api.services.ServiceHandler;
 
 /**
@@ -128,11 +126,19 @@ public class RutaSalidaChecklistFragment extends Fragment {
                                                   android.R.layout.simple_dropdown_item_1line,
                                                   rutaData);
 
+        Transporte t1 = new Transporte(); t1.setId_transporte(1); t1.setPlaca("XKS24");
+        Transporte t2 = new Transporte(); t2.setId_transporte(2); t2.setPlaca("LPA67");
+        transportesData.add(t1); transportesData.add(t2);
+        Ruta r1 = new Ruta(); r1.setId_ruta(1); r1.setNombre("M4"); r1.setPorteo_perteneciente(1);
+        Ruta r2 = new Ruta(); r2.setId_ruta(2); r2.setNombre("K5"); r1.setPorteo_perteneciente(2);
+        rutaData.add(r1); rutaData.add(r2);
         // OBTENER DATOS DE LA API
         //transportesData     .addAll(api.getTransportes());
-        //transportesAdaptador.notifyDataSetChanged();
+        transportesAdaptador.notifyDataSetChanged();
         //rutaData            .addAll(api.getRutas());
-        //rutaAdaptador       .notifyDataSetChanged();
+        rutaAdaptador       .notifyDataSetChanged();
+
+
 
 
         createHashMap();

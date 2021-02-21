@@ -87,6 +87,15 @@ public class RutaLlegadaChecklistFragment extends Fragment {
 
             //api.registrarLlegada(nivelGasolina,KM,listaCheckboxes.toString());
 
+            listaCheckboxes.clear();
+            for(int i=0; i<checkBox.length; i++){
+                if (checkBox[i].isChecked()) {
+                    listaCheckboxes.add(parametrosSalida.get(i));
+                }
+            }
+            // call api
+            Toast.makeText(getContext(), listaCheckboxes.toString(), Toast.LENGTH_SHORT).show();
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Programación de mantenimientos");
             builder.setMessage("¿Quieres programar un mantenimiento?");
@@ -130,34 +139,64 @@ public class RutaLlegadaChecklistFragment extends Fragment {
         btnCheckLlegada      .setOnClickListener(btnRegistrarCheckLlegadaHandler);
 
         crearCheckBoxes(view);
+        createHashMap();
     }
 
     public void crearCheckBoxes(View view){
-        checkBox[0]  = view.findViewById(R.id.checkBox);
-        checkBox[1]  = view.findViewById(R.id.checkBox2);
-        checkBox[2]  = view.findViewById(R.id.checkBox3);
-        checkBox[3]  = view.findViewById(R.id.checkBox4);
-        checkBox[4]  = view.findViewById(R.id.checkBox5);
-        checkBox[5]  = view.findViewById(R.id.checkBox6);
-        checkBox[6]  = view.findViewById(R.id.checkBox7);
-        checkBox[7]  = view.findViewById(R.id.checkBox8);
-        checkBox[8]  = view.findViewById(R.id.checkBox9);
-        checkBox[9]  = view.findViewById(R.id.checkBox10);
-        checkBox[10] = view.findViewById(R.id.checkBox11);
-        checkBox[11] = view.findViewById(R.id.checkBox12);
-        checkBox[12] = view.findViewById(R.id.checkBox13);
-        checkBox[13] = view.findViewById(R.id.checkBox14);
-        checkBox[14] = view.findViewById(R.id.checkBox15);
-        checkBox[15] = view.findViewById(R.id.checkBox16);
-        checkBox[16] = view.findViewById(R.id.checkBox17);
-        checkBox[17] = view.findViewById(R.id.checkBox18);
-        checkBox[18] = view.findViewById(R.id.checkBox19);
-        checkBox[19] = view.findViewById(R.id.checkBox20);
-        checkBox[20] = view.findViewById(R.id.checkBox21);
-        checkBox[21] = view.findViewById(R.id.checkBox22);
-        checkBox[22] = view.findViewById(R.id.checkBox23);
-        checkBox[23] = view.findViewById(R.id.checkBox24);
-        checkBox[24] = view.findViewById(R.id.checkBox25);
-        checkBox[25] = view.findViewById(R.id.checkBox26);
+        checkBox[0]  = view.findViewById(R.id.checkBox43);
+        checkBox[1]  = view.findViewById(R.id.checkBox44);
+        checkBox[2]  = view.findViewById(R.id.checkBox45);
+        checkBox[3]  = view.findViewById(R.id.checkBox46);
+        checkBox[4]  = view.findViewById(R.id.checkBox47);
+        checkBox[5]  = view.findViewById(R.id.checkBox48);
+        checkBox[6]  = view.findViewById(R.id.checkBox49);
+        checkBox[7]  = view.findViewById(R.id.checkBox50);
+        checkBox[8]  = view.findViewById(R.id.checkBox51);
+        checkBox[9]  = view.findViewById(R.id.checkBox52);
+        checkBox[10] = view.findViewById(R.id.checkBox53);
+        checkBox[11] = view.findViewById(R.id.checkBox54);
+        checkBox[12] = view.findViewById(R.id.checkBox55);
+        checkBox[13] = view.findViewById(R.id.checkBox56);
+        checkBox[14] = view.findViewById(R.id.checkBox57);
+        checkBox[15] = view.findViewById(R.id.checkBox58);
+        checkBox[16] = view.findViewById(R.id.checkBox59);
+        checkBox[17] = view.findViewById(R.id.checkBox60);
+        checkBox[18] = view.findViewById(R.id.checkBox61);
+        checkBox[19] = view.findViewById(R.id.checkBox62);
+        checkBox[20] = view.findViewById(R.id.checkBox63);
+        checkBox[21] = view.findViewById(R.id.checkBox64);
+        checkBox[22] = view.findViewById(R.id.checkBox65);
+        checkBox[23] = view.findViewById(R.id.checkBox66);
+        checkBox[24] = view.findViewById(R.id.checkBox67);
+        checkBox[25] = view.findViewById(R.id.checkBox68);
+    }
+
+    public void createHashMap(){
+        parametrosSalida.put(0, "Agua en tanque de recuperación");
+        parametrosSalida.put(1, "Luces generales");
+        parametrosSalida.put(2, "Liquido de frenos");
+        parametrosSalida.put(3, "Aceite de motor");
+        parametrosSalida.put(4, "Nivel de agua en radiador");
+        parametrosSalida.put(5, "Agua en tanque de parabrisas");
+        parametrosSalida.put(6, "Hules de limpia parabrisas");
+        parametrosSalida.put(7, "Presión de llantas");
+        parametrosSalida.put(8, "Aditamientos");
+        parametrosSalida.put(9, "Accesorios");
+        parametrosSalida.put(10, "Cruceta");
+        parametrosSalida.put(11, "Gato");
+        parametrosSalida.put(12, "Extintor");
+        parametrosSalida.put(13, "Llantas de refacción");
+        parametrosSalida.put(14, "Candado");
+        parametrosSalida.put(15, "Limpieza general de unidad");
+        parametrosSalida.put(16, "Techo");
+        parametrosSalida.put(17, "Puertas");
+        parametrosSalida.put(18, "Vidrios");
+        parametrosSalida.put(19, "Defensa");
+        parametrosSalida.put(20, "Fascia");
+        parametrosSalida.put(21, "Faros");
+        parametrosSalida.put(22, "Retrovisores");
+        parametrosSalida.put(23, "Manijas de camper");
+        parametrosSalida.put(24, "Asientos");
+        parametrosSalida.put(25, "Tablero");
     }
 }

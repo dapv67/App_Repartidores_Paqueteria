@@ -55,6 +55,7 @@ public class RutaSalidaFragment extends Fragment {
     private TextView             txtTotalPaquetes                 ;
     private ListView             listViewPaquetes                 ;
     private ArrayAdapter<String> adaptador                        ;
+    private Button               btnSalidaRuta                    ;
 
     private ServiceHandler       api                              ;
     private List<String>         listaPaquetes = new ArrayList<>();
@@ -161,6 +162,13 @@ public class RutaSalidaFragment extends Fragment {
         }
     };
 
+    private View.OnClickListener btnSalidaRutaHandler = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Navigation.findNavController(view).navigate(R.id.action_rutaSalidaFragment_to_homeFragment);
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -170,13 +178,9 @@ public class RutaSalidaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button btnSalidaRuta = view.findViewById(R.id.btn_registrarSalidaRuta);
-        btnSalidaRuta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_rutaSalidaFragment_to_homeFragment);
-            }
-        });
+
+        btnSalidaRuta = view.findViewById(R.id.btn_registrarSalidaRuta);
+        btnSalidaRuta.setOnClickListener(btnSalidaRutaHandler);
 
         btnEscanear          = view.findViewById(R.id.btnEscanear);
         txtTotalPaquetes     = view.findViewById(R.id.txtTotalPaquetes);
