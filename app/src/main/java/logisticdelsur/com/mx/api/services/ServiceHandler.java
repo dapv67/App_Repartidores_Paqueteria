@@ -1,5 +1,6 @@
 package logisticdelsur.com.mx.api.services;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -7,7 +8,10 @@ import java.util.Base64;
 import java.util.List;
 
 import logisticdelsur.com.mx.api.interfaces.ISalida;
+import logisticdelsur.com.mx.api.modelo.EjemploModelo;
+import logisticdelsur.com.mx.api.modelo.EstadosModelo;
 import logisticdelsur.com.mx.api.modelo.SalidaModelo;
+import logisticdelsur.com.mx.api.modelo.Vector;
 import logisticdelsur.com.mx.logisticgps.MainActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,7 +22,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceHandler {
 
     private       Retrofit  retrofit;
-    private final String    BASE_URL = "https://logisticdelsur.com.mx/";
+    private final String    BASE_URL = "http://api.logisticdelsur.com.mx/";
+    //private final String    BASE_URL = "https://jsonplaceholder.typicode.com/";
 
     public ServiceHandler(){
         retrofit = new Retrofit.Builder()
@@ -40,6 +45,52 @@ public class ServiceHandler {
 
             @Override
             public void onFailure(Call<List<SalidaModelo>> call, Throwable t) {
+                return;
+            }
+        });
+
+        return resultado;
+    }
+
+    public List<EjemploModelo> listEjemplo(){
+        List<EjemploModelo>              resultado = new ArrayList<>();
+        ISalida                   iSalida   = retrofit.create(ISalida.class);
+        Call<List<EjemploModelo>>  call      = iSalida.listEjemplo();
+
+        call.enqueue(new Callback<List<EjemploModelo>>() {
+            @Override
+            public void onResponse(Call<List<EjemploModelo>> call, Response<List<EjemploModelo>> response) {
+                Log.d("success", response.body().toString());
+                resultado.addAll(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<EjemploModelo>> call, Throwable t) {
+
+                Log.d("success", "error en la api");
+                return;
+            }
+        });
+
+        return resultado;
+    }
+
+    public List<EstadosModelo> getEstados(){
+        List<EstadosModelo>              resultado = new ArrayList<>();
+        ISalida                   iSalida   = retrofit.create(ISalida.class);
+        Call<List<EstadosModelo>>  call      = iSalida.getEstados();
+
+        call.enqueue(new Callback<List<EstadosModelo>>() {
+            @Override
+            public void onResponse(Call<List<EstadosModelo>> call, Response<List<EstadosModelo>> response) {
+                Log.d("success", response.body().toString());
+                resultado.addAll(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<EstadosModelo>> call, Throwable t) {
+
+                Log.d("success", t.getMessage().toString());
                 return;
             }
         });

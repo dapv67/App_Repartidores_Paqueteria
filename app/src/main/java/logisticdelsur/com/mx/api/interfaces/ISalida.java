@@ -2,6 +2,8 @@ package logisticdelsur.com.mx.api.interfaces;
 
 import java.util.List;
 
+import logisticdelsur.com.mx.api.modelo.EjemploModelo;
+import logisticdelsur.com.mx.api.modelo.EstadosModelo;
 import logisticdelsur.com.mx.api.modelo.Ruta;
 import logisticdelsur.com.mx.api.modelo.SalidaModelo;
 import logisticdelsur.com.mx.api.modelo.Transporte;
@@ -17,12 +19,17 @@ public interface ISalida {
     @GET("posts")
     Call<List<SalidaModelo>> listSalidas();
 
+    @GET("posts")
+    Call<List<EjemploModelo>> listEjemplo();
 
     @GET("rutas")
     Call<List<Ruta>> getRutas();
 
     @GET("transportes")
     Call<List<Transporte>> getTransportes();
+
+    @GET("proveedores/estados")
+    Call<List<EstadosModelo>> getEstados();
 
     @POST("salida")
     Call<Vector> setSalidaChecks(

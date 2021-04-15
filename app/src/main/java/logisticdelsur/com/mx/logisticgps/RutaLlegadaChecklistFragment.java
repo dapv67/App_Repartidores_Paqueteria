@@ -85,6 +85,7 @@ public class RutaLlegadaChecklistFragment extends Fragment {
         @Override
         public void onClick(View view) {
 
+
             //api.registrarLlegada(nivelGasolina,KM,listaCheckboxes.toString());
 
             listaCheckboxes.clear();

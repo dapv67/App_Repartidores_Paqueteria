@@ -8,11 +8,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import logisticdelsur.com.mx.api.modelo.EjemploModelo;
+import logisticdelsur.com.mx.api.modelo.EstadosModelo;
+import logisticdelsur.com.mx.api.modelo.Vector;
+import logisticdelsur.com.mx.api.services.ServiceHandler;
 
 import static android.widget.Toast.makeText;
 
@@ -77,6 +86,19 @@ public class LoginFragment extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ServiceHandler serviceHandler = new ServiceHandler();
+
+                try {
+                    List<EstadosModelo> resultado = new ArrayList<>();
+                    resultado.addAll(serviceHandler.getEstados());
+
+                    Log.d("success", resultado.isEmpty()?"true":"false");
+                    Toast.makeText(getContext(), resultado.get(0).toString(), Toast.LENGTH_LONG).show();
+                }catch (Exception e){
+                    Log.d("success", e.getMessage());
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
                 Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
             }
         });
