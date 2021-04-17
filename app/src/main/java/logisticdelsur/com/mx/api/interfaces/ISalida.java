@@ -4,6 +4,7 @@ import java.util.List;
 
 import logisticdelsur.com.mx.api.modelo.EjemploModelo;
 import logisticdelsur.com.mx.api.modelo.EstadosModelo;
+import logisticdelsur.com.mx.api.modelo.CiudadesModelo;
 import logisticdelsur.com.mx.api.modelo.Ruta;
 import logisticdelsur.com.mx.api.modelo.SalidaModelo;
 import logisticdelsur.com.mx.api.modelo.Transporte;
@@ -13,6 +14,8 @@ import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
+
 
 public interface ISalida {
 
@@ -26,10 +29,13 @@ public interface ISalida {
     Call<List<Ruta>> getRutas();
 
     @GET("transportes")
-    Call<List<Transporte>> getTransportes();
+    Call<List<Transporte>> getTransportes(@Query("por") String por);
 
     @GET("proveedores/estados")
     Call<List<EstadosModelo>> getEstados();
+
+    @GET("proveedores/ciudades")
+    Call<List<CiudadesModelo>> getCiudades(@Query("estado") String estado);
 
     @POST("salida")
     Call<Vector> setSalidaChecks(
@@ -57,4 +63,6 @@ public interface ISalida {
             @Field("transporte") String transporte,
             @Field("motivo")     String motivo
     );
+
+    
 }

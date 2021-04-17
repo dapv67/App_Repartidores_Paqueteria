@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,12 +127,15 @@ public class RutaSalidaChecklistFragment extends Fragment {
                                                   android.R.layout.simple_dropdown_item_1line,
                                                   rutaData);
 
-        Transporte t1 = new Transporte(); t1.setId_transporte(1); t1.setPlaca("XKS24");
-        Transporte t2 = new Transporte(); t2.setId_transporte(2); t2.setPlaca("LPA67");
-        transportesData.add(t1); transportesData.add(t2);
-        Ruta r1 = new Ruta(); r1.setId_ruta(1); r1.setNombre("M4"); r1.setPorteo_perteneciente(1);
-        Ruta r2 = new Ruta(); r2.setId_ruta(2); r2.setNombre("K5"); r1.setPorteo_perteneciente(2);
-        rutaData.add(r1); rutaData.add(r2);
+        Transporte t0 = new Transporte(); t0.setId_transporte(0); t0.setPlaca("Seleccione un transporte");
+        Transporte t1 = new Transporte(); t1.setId_transporte(1); t1.setPlaca("MVP-23-12");
+        Transporte t2 = new Transporte(); t2.setId_transporte(2); t2.setPlaca("JNL-05-02");
+        Transporte t3 = new Transporte(); t3.setId_transporte(3); t3.setPlaca("NPZ-81-20");
+        transportesData.add(t0); transportesData.add(t1); transportesData.add(t2); transportesData.add(t3);
+        Ruta r0 = new Ruta(); r0.setId_ruta(1); r0.setNombre("Seleccione una ruta"); r0.setPorteo_perteneciente(1);
+        Ruta r1 = new Ruta(); r1.setId_ruta(1); r1.setNombre("L01"); r1.setPorteo_perteneciente(1);
+        Ruta r2 = new Ruta(); r2.setId_ruta(2); r2.setNombre("F01"); r2.setPorteo_perteneciente(1);
+        rutaData.add(r0); rutaData.add(r1); rutaData.add(r2);
         // OBTENER DATOS DE LA API
         //transportesData     .addAll(api.getTransportes());
         transportesAdaptador.notifyDataSetChanged();

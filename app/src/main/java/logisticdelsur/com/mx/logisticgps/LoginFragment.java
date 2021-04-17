@@ -20,6 +20,8 @@ import java.util.List;
 
 import logisticdelsur.com.mx.api.modelo.EjemploModelo;
 import logisticdelsur.com.mx.api.modelo.EstadosModelo;
+import logisticdelsur.com.mx.api.modelo.CiudadesModelo;
+import logisticdelsur.com.mx.api.modelo.Transporte;
 import logisticdelsur.com.mx.api.modelo.Vector;
 import logisticdelsur.com.mx.api.services.ServiceHandler;
 
@@ -87,13 +89,10 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ServiceHandler serviceHandler = new ServiceHandler();
-
                 try {
-                    List<EstadosModelo> resultado = new ArrayList<>();
-                    resultado.addAll(serviceHandler.getEstados());
-
-                    Log.d("success", resultado.isEmpty()?"true":"false");
-                    Toast.makeText(getContext(), resultado.get(0).toString(), Toast.LENGTH_LONG).show();
+                    List<Transporte> resultado = new ArrayList<>();
+                    resultado.addAll(serviceHandler.getTransportes());
+                    Log.d("success", "(3) El resultado es: "+resultado.toString());
                 }catch (Exception e){
                     Log.d("success", e.getMessage());
                     Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();

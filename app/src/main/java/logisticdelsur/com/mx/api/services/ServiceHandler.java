@@ -3,14 +3,17 @@ package logisticdelsur.com.mx.api.services;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
 import logisticdelsur.com.mx.api.interfaces.ISalida;
+import logisticdelsur.com.mx.api.modelo.CiudadesModelo;
 import logisticdelsur.com.mx.api.modelo.EjemploModelo;
 import logisticdelsur.com.mx.api.modelo.EstadosModelo;
 import logisticdelsur.com.mx.api.modelo.SalidaModelo;
+import logisticdelsur.com.mx.api.modelo.Transporte;
 import logisticdelsur.com.mx.api.modelo.Vector;
 import logisticdelsur.com.mx.logisticgps.MainActivity;
 import retrofit2.Call;
@@ -95,6 +98,50 @@ public class ServiceHandler {
             }
         });
 
+        return resultado;
+    }
+
+    public List<CiudadesModelo> getCiudades(){
+        List<CiudadesModelo>         resultado   = new ArrayList<>();
+        ISalida                     iSalida     = retrofit.create(ISalida.class);
+        String                      estado      = "Colima";
+        Call<List<CiudadesModelo>>  call        = iSalida.getCiudades(estado);
+
+        call.enqueue(new Callback<List<CiudadesModelo>>() {
+            @Override
+            public void onResponse(Call<List<CiudadesModelo>> call, Response<List<CiudadesModelo>> response) {
+                Log.d("success", response.body().toString());
+                resultado.addAll(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<CiudadesModelo>> call, Throwable t) {
+
+                Log.d("success", t.getMessage().toString());
+                return;
+            }
+        });
+
+        return resultado;
+    }
+
+    public List<Transporte> getTransportes(){
+        List<Transporte>        resultado   = new ArrayList<>();
+        ISalida                 iSalida     = retrofit.create(ISalida.class);
+        String                  porteo      = "1";
+        Call<List<Transporte>>  call        = iSalida.getTransportes(porteo);
+        call.enqueue(new Callback<List<Transporte>>() {
+            @Override
+            public void onResponse(Call<List<Transporte>> call, Response<List<Transporte>> response) {
+                resultado.addAll(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Transporte>> call, Throwable t) {
+                Log.d("success", t.getMessage().toString());
+                return;
+            }
+        });
         return resultado;
     }
 }
