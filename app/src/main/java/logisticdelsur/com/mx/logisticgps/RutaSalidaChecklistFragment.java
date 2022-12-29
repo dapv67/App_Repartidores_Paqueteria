@@ -111,8 +111,8 @@ public class RutaSalidaChecklistFragment extends Fragment {
             SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("checklist",listaCheckboxes.toString());
-            editor.putString("transporte",spinnerTransporteSalida.getSelectedItem().toString());
-            editor.putString("ruta",spinnerRutaSalida.getSelectedItem().toString());
+            //editor.putString("transporte",spinnerTransporteSalida.getSelectedItem().toString());
+            //editor.putString("ruta",spinnerRutaSalida.getSelectedItem().toString());
             editor.commit();
 
             Navigation.findNavController(view).navigate(R.id.action_rutaSalidaChecklistFragment_to_rutaSalidaFragment);
@@ -124,21 +124,21 @@ public class RutaSalidaChecklistFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ruta_salida_checklist, container, false);
 
-        transportesData      = new ArrayList<>();
-        rutaData             = new ArrayList<>();
+        //transportesData      = new ArrayList<>();
+        //rutaData             = new ArrayList<>();
         parametrosSalida     = new HashMap<>();
         listaCheckboxes      = new ArrayList<>();
         checkBox             = new CheckBox[26] ;
         api                  = new ServiceHandler();
-        transportesAdaptador = new SpinAdapterTransporte(getContext(),
+        /* transportesAdaptador = new SpinAdapterTransporte(getContext(),
                 android.R.layout.simple_dropdown_item_1line,
                 transportesData);
         rutaAdaptador        = new SpinAdapterRuta(getContext(),
                 android.R.layout.simple_dropdown_item_1line,
-                rutaData);
+                rutaData); */
 
         ISalida iSalida = ServiceHandler.createService();
-        Call<List<Transporte>> call = iSalida.getTransportes("0");
+        /* Call<List<Transporte>> call = iSalida.getTransportes("0");
         call.enqueue(new Callback<List<Transporte>>() {
             @Override
             public void onResponse(Call<List<Transporte>> call, Response<List<Transporte>> response) {
@@ -165,12 +165,12 @@ public class RutaSalidaChecklistFragment extends Fragment {
         Ruta r0 = new Ruta(); r0.setId_ruta(1); r0.setNombre("Seleccione una ruta"); r0.setPorteo_perteneciente(1);
         Ruta r1 = new Ruta(); r1.setId_ruta(1); r1.setNombre("L01"); r1.setPorteo_perteneciente(1);
         Ruta r2 = new Ruta(); r2.setId_ruta(2); r2.setNombre("F01"); r2.setPorteo_perteneciente(1);
-        rutaData.add(r0); rutaData.add(r1); rutaData.add(r2);
+        rutaData.add(r0); rutaData.add(r1); rutaData.add(r2); */
         // OBTENER DATOS DE LA API
         //transportesData     .addAll(api.getTransportes());
 
         //rutaData            .addAll(api.getRutas());
-        rutaAdaptador       .notifyDataSetChanged();
+        //rutaAdaptador       .notifyDataSetChanged();
 
 
 
@@ -178,19 +178,19 @@ public class RutaSalidaChecklistFragment extends Fragment {
         createHashMap();
 
         btnRegistrarCheckSalida = view.findViewById(R.id.btn_checkSalidaRuta);
-        spinnerRutaSalida       = view.findViewById(R.id.spinnerNivelGasolina);
-        spinnerTransporteSalida = view.findViewById(R.id.spinnerTransporteSalida);
+        //spinnerRutaSalida       = view.findViewById(R.id.spinnerNivelGasolina);
+        //spinnerTransporteSalida = view.findViewById(R.id.spinnerTransporteSalida);
 
         btnRegistrarCheckSalida.setOnClickListener(btnRegistrarCheckSalidaHandler);
-        spinnerTransporteSalida.setAdapter(transportesAdaptador);
-        spinnerRutaSalida      .setAdapter(rutaAdaptador);
+        //spinnerTransporteSalida.setAdapter(transportesAdaptador);
+        //spinnerRutaSalida      .setAdapter(rutaAdaptador);
 
         crearCheckBoxes(view);
 
         return view;
     }
 
-    /*
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -239,7 +239,7 @@ public class RutaSalidaChecklistFragment extends Fragment {
         crearCheckBoxes(view);
 
     }
-    */
+
     public void crearCheckBoxes(View view){
         checkBox[0]  = view.findViewById(R.id.checkBox);
         checkBox[1]  = view.findViewById(R.id.checkBox2);
