@@ -23,6 +23,9 @@ public class Transporte {
 
     @Override
     public String toString() {
-        return "{Id_transporte:" + Id_transporte +", placa:" + placa +'}';
+        return "Transporte{" +
+                "Id_transporte=" + Id_transporte +
+                ", placa='" + placa + '\'' +
+                '}';
     }
 }

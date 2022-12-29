@@ -1,9 +1,13 @@
 package logisticdelsur.com.mx.logisticgps;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -23,10 +27,15 @@ import java.util.List;
 import java.util.Map;
 
 import logisticdelsur.com.mx.adaptadores.SpinAdapterRuta;
+import logisticdelsur.com.mx.api.interfaces.ISalida;
 import logisticdelsur.com.mx.api.modelo.Ruta;
 import logisticdelsur.com.mx.adaptadores.SpinAdapterTransporte;
 import logisticdelsur.com.mx.api.modelo.Transporte;
+import logisticdelsur.com.mx.api.modelo.UserModelo;
 import logisticdelsur.com.mx.api.services.ServiceHandler;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,6 +98,7 @@ public class RutaSalidaChecklistFragment extends Fragment {
     }
 
     private View.OnClickListener btnRegistrarCheckSalidaHandler = new View.OnClickListener() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onClick(View view) {
             listaCheckboxes.clear();
@@ -98,7 +108,12 @@ public class RutaSalidaChecklistFragment extends Fragment {
                     }
                 }
                 // call api
-            Toast.makeText(getContext(), listaCheckboxes.toString(), Toast.LENGTH_SHORT).show();
+            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("checklist",listaCheckboxes.toString());
+            editor.putString("transporte",spinnerTransporteSalida.getSelectedItem().toString());
+            editor.putString("ruta",spinnerRutaSalida.getSelectedItem().toString());
+            editor.commit();
 
             Navigation.findNavController(view).navigate(R.id.action_rutaSalidaChecklistFragment_to_rutaSalidaFragment);
         }
@@ -107,9 +122,75 @@ public class RutaSalidaChecklistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ruta_salida_checklist, container, false);
+        View view = inflater.inflate(R.layout.fragment_ruta_salida_checklist, container, false);
+
+        transportesData      = new ArrayList<>();
+        rutaData             = new ArrayList<>();
+        parametrosSalida     = new HashMap<>();
+        listaCheckboxes      = new ArrayList<>();
+        checkBox             = new CheckBox[26] ;
+        api                  = new ServiceHandler();
+        transportesAdaptador = new SpinAdapterTransporte(getContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                transportesData);
+        rutaAdaptador        = new SpinAdapterRuta(getContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                rutaData);
+
+        ISalida iSalida = ServiceHandler.createService();
+        Call<List<Transporte>> call = iSalida.getTransportes("0");
+        call.enqueue(new Callback<List<Transporte>>() {
+            @Override
+            public void onResponse(Call<List<Transporte>> call, Response<List<Transporte>> response) {
+                if(response.isSuccessful()){
+                    Log.d("success", "onResponse: " + response.body().toString());
+                    Transporte t0 = new Transporte(); t0.setId_transporte(0); t0.setPlaca("Seleccione un transporte");
+                    transportesData.add(t0);
+                    transportesData.addAll(response.body());
+                    transportesAdaptador.notifyDataSetChanged();
+                }
+                else{
+                    Toast.makeText(getActivity(),"Transportes no encontrados",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Transporte>> call, Throwable t) {
+                Toast.makeText(getActivity(),"Error: No se puede establecer conexión con la BD",Toast.LENGTH_LONG).show();
+                Log.d("error", t.toString());
+                return;
+            }
+        });
+
+        Ruta r0 = new Ruta(); r0.setId_ruta(1); r0.setNombre("Seleccione una ruta"); r0.setPorteo_perteneciente(1);
+        Ruta r1 = new Ruta(); r1.setId_ruta(1); r1.setNombre("L01"); r1.setPorteo_perteneciente(1);
+        Ruta r2 = new Ruta(); r2.setId_ruta(2); r2.setNombre("F01"); r2.setPorteo_perteneciente(1);
+        rutaData.add(r0); rutaData.add(r1); rutaData.add(r2);
+        // OBTENER DATOS DE LA API
+        //transportesData     .addAll(api.getTransportes());
+
+        //rutaData            .addAll(api.getRutas());
+        rutaAdaptador       .notifyDataSetChanged();
+
+
+
+
+        createHashMap();
+
+        btnRegistrarCheckSalida = view.findViewById(R.id.btn_checkSalidaRuta);
+        spinnerRutaSalida       = view.findViewById(R.id.spinnerNivelGasolina);
+        spinnerTransporteSalida = view.findViewById(R.id.spinnerTransporteSalida);
+
+        btnRegistrarCheckSalida.setOnClickListener(btnRegistrarCheckSalidaHandler);
+        spinnerTransporteSalida.setAdapter(transportesAdaptador);
+        spinnerRutaSalida      .setAdapter(rutaAdaptador);
+
+        crearCheckBoxes(view);
+
+        return view;
     }
+
+    /*
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -158,7 +239,7 @@ public class RutaSalidaChecklistFragment extends Fragment {
         crearCheckBoxes(view);
 
     }
-
+    */
     public void crearCheckBoxes(View view){
         checkBox[0]  = view.findViewById(R.id.checkBox);
         checkBox[1]  = view.findViewById(R.id.checkBox2);

@@ -1,6 +1,8 @@
 package logisticdelsur.com.mx.logisticgps;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,16 +10,32 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import logisticdelsur.com.mx.api.interfaces.ISalida;
+import logisticdelsur.com.mx.api.modelo.Entrega;
+import logisticdelsur.com.mx.api.modelo.SalidaRuta;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +52,8 @@ public class EntregasFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Spinner spinnerNivelGasolina;
 
     private Button   btnEscanearEntrega;
     private TextView txtEntregaPaquete;
@@ -87,11 +107,10 @@ public class EntregasFragment extends Fragment {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null) {
             if(result.getContents() == null) {
-                Toast.makeText(getContext(), "Cancelado", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Cancelado", Toast.LENGTH_LONG).show();
             } else {
-
                 txtEntregaPaquete.setText(result.getContents());
-                Toast.makeText(getContext(), "Escaneado : " + result.getContents(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Escaneado : " + result.getContents(), Toast.LENGTH_LONG).show();
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -101,6 +120,35 @@ public class EntregasFragment extends Fragment {
     public View.OnClickListener btnRegistrarEntregaHandler = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            String status = spinnerNivelGasolina.getSelectedItem().toString();
+            String paquete = (String) txtEntregaPaquete.getText();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://api.logisticdelsur.com.mx/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Entrega entrega = new Entrega(paquete,status);
+            ISalida iSalida = retrofit.create(ISalida.class);
+            Call<Entrega> call = iSalida.setEntrega(entrega);
+
+            call.enqueue(new Callback<Entrega>() {
+                @Override
+                public void onResponse(Call<Entrega> call, Response<Entrega> response) {
+                    Log.d("Success","Con éxito");
+                }
+
+                @Override
+                public void onFailure(Call<Entrega> call, Throwable t) {
+                    SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    String pendientes = preferences.getString("pendientes","");
+                    pendientes = pendientes+",{paquete:'"+paquete+"',status:'"+status+"'}";
+                    //Toast.makeText(getContext(),"Pendientes: "+pendientes,Toast.LENGTH_SHORT).show();
+                    editor.putString("pendientes", pendientes);
+                    editor.commit();
+                    Log.d("Success",t.getMessage());
+                    return;
+                }
+            });
             Toast.makeText(getActivity(), "Entrega registrada!", Toast.LENGTH_SHORT).show();
             Navigation.findNavController(view).navigate(R.id.action_entregasFragment_to_homeFragment);
         }
@@ -124,6 +172,7 @@ public class EntregasFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         txtEntregaPaquete = view.findViewById(R.id.txtEntregaPaquete);
+        spinnerNivelGasolina = view.findViewById(R.id.spinnerNivelGasolina);
         btnEscanearEntrega = view.findViewById(R.id.btnEscanearEntrega);
 
         btnEscanearEntrega.setOnClickListener(btnEscanearHandler);

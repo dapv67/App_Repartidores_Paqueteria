@@ -1,6 +1,7 @@
 package logisticdelsur.com.mx.logisticgps;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,17 +14,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import logisticdelsur.com.mx.api.interfaces.ISalida;
 import logisticdelsur.com.mx.api.modelo.EjemploModelo;
+import logisticdelsur.com.mx.api.modelo.Entrega;
 import logisticdelsur.com.mx.api.modelo.EstadosModelo;
 import logisticdelsur.com.mx.api.modelo.CiudadesModelo;
 import logisticdelsur.com.mx.api.modelo.Transporte;
+import logisticdelsur.com.mx.api.modelo.UserModelo;
 import logisticdelsur.com.mx.api.modelo.Vector;
 import logisticdelsur.com.mx.api.services.ServiceHandler;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.widget.Toast.makeText;
 
@@ -42,6 +50,7 @@ public class LoginFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private String username;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -78,28 +87,71 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        EditText username = view.findViewById(R.id.editTextTextPersonName);
+        EditText password = view.findViewById(R.id.editTextTextPassword);
         Button btnLogin = view.findViewById(R.id.btn_login);
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ServiceHandler serviceHandler = new ServiceHandler();
-                try {
-                    List<Transporte> resultado = new ArrayList<>();
-                    resultado.addAll(serviceHandler.getTransportes());
-                    Log.d("success", "(3) El resultado es: "+resultado.toString());
-                }catch (Exception e){
-                    Log.d("success", e.getMessage());
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                if(username.getText().length() == 0){
+                    Toast.makeText(getContext(),"Ingrese el usuario",Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                if(password.getText().length() == 0){
+                    Toast.makeText(getContext(),"Ingrese la contraseña",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ISalida iSalida = ServiceHandler.createService();
+                Call<UserModelo> call = iSalida.verificarUsuario(username.getText().toString(),password.getText().toString());
+                call.enqueue(new Callback<UserModelo>() {
+                    @Override
+                    public void onResponse(Call<UserModelo> call, Response<UserModelo> response) {
+                        if(response.isSuccessful()){
+                            if(response.body().getRol().equals("chofer") || response.body().getRol().equals("admin")){
+                                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
+                            }
+                        }
+                        else{
+                            Toast.makeText(getActivity(),"Usuario no encontrado",Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
+                    @Override
+                    public void onFailure(Call<UserModelo> call, Throwable t) {
+                        Toast.makeText(getActivity(),"Error: No se puede establecer conexión con la BD",Toast.LENGTH_LONG).show();
+                        Log.d("error", t.toString());
+                        return;
+                    }
+                });
+                /*
+
+                else {
+                    if(username.getText().toString().equals("rodolfo") && password.getText().toString().equals("123")){
+                        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("username","RODOLFO");
+                        editor.commit();
+                        Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
+                    }
+                    else {
+                        if(username.getText().toString().equals("juan") && password.getText().toString().equals("123")){
+                            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("username","JUAN");
+                            editor.commit();
+                            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
+                        }
+                        else{
+                            Toast.makeText(getContext(),"Credenciales incorrectas",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                */
             }
         });
+
+        return view;
     }
 }

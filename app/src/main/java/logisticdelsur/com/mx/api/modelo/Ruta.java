@@ -29,4 +29,9 @@ public class Ruta {
     public void setPorteo_perteneciente(int porteo_perteneciente) {
         Porteo_perteneciente = porteo_perteneciente;
     }
+
+    @Override
+    public String toString() {
+        return Nombre;
+    }
 }

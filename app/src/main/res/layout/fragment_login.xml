@@ -23,21 +23,10 @@
             tools:layout_editor_absoluteX="191dp"
             tools:layout_editor_absoluteY="149dp" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/roboto"
-            android:text="@string/sesion"
-            android:textColor="@color/black"
-            android:textSize="25sp" />
-
         <EditText
             android:id="@+id/editTextTextPersonName"
             style="@style/input"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="70dp"
             android:drawableStart="@drawable/vector_person"
             android:hint="@string/hint_usuario"
             android:inputType="textPersonName" />
@@ -45,7 +34,7 @@
         <EditText
             android:id="@+id/editTextTextPassword"
             style="@style/input"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="21dp"
             android:drawableStart="@drawable/vector_lock"
             android:hint="@string/hint_pass"
             android:inputType="textPassword" />

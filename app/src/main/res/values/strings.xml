@@ -2,8 +2,7 @@
     <string name="app_name">Logistic GPS</string>
     <string name="hint_usuario">Usuario</string>
     <string name="hint_pass">Password</string>
-    <string name="btn_login">LOGIN</string>
-    <string name="sesion">Iniciar sesión</string>
+    <string name="btn_login">Iniciar sesión</string>
     <string-array name="rutas">
         <item>Ruta</item>
         <item>M1</item>

@@ -1,14 +1,19 @@
 package logisticdelsur.com.mx.logisticgps;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +23,22 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import logisticdelsur.com.mx.api.interfaces.ISalida;
+import logisticdelsur.com.mx.api.modelo.LlegadaRuta;
+import logisticdelsur.com.mx.api.modelo.SalidaRuta;
 import logisticdelsur.com.mx.api.services.ServiceHandler;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -95,7 +110,7 @@ public class RutaLlegadaChecklistFragment extends Fragment {
                 }
             }
             // call api
-            Toast.makeText(getContext(), listaCheckboxes.toString(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), listaCheckboxes.toString(), Toast.LENGTH_SHORT).show();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Programación de mantenimientos");
@@ -104,13 +119,54 @@ public class RutaLlegadaChecklistFragment extends Fragment {
             builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("checklist",listaCheckboxes.toString());
+                    editor.putString("gas",spinnerNivelGasolina.getSelectedItem().toString());
+                    editor.putString("km",txtKMLlegada.getText().toString());
+
                     //api.registrarMantenimiento();
                     Navigation.findNavController(view).navigate(R.id.action_rutaLlegadaChecklistFragment_to_rutaMantenimientoFragment);
                 }
             });
             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://api.logisticdelsur.com.mx/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                    String tiempoSalida = preferences.getString("tiempoSalida","00:00");
+                    LocalTime tiempoLlegada = LocalTime.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                    String aux = tiempoLlegada.format(formatter);
+                    String diffTiempo = String.valueOf(Integer.parseInt(aux.split(":")[1]) -  Integer.parseInt(tiempoSalida.split(":")[1]));
+                    //Toast.makeText(getContext(),"Tiempo transcurrido: "+diffTiempo+" min",Toast.LENGTH_SHORT).show();
+                    String gas = spinnerNivelGasolina.getSelectedItem().toString();
+                    String km = txtKMLlegada.getText().toString();
+                    LlegadaRuta llegadaRuta = new LlegadaRuta(gas,km,diffTiempo);
+                    ISalida iSalida   =         retrofit.create(ISalida.class);
+                    Call<LlegadaRuta> call = iSalida.setLlegadaRuta(llegadaRuta);
+                    call.enqueue(new Callback<LlegadaRuta>() {
+                        @Override
+                        public void onResponse(Call<LlegadaRuta> call, Response<LlegadaRuta> response) {
+                            if(!response.isSuccessful()){
+                                Log.d("Success","Falló");
+                                return;
+                            }
+                            Log.d("Success","Con éxito");
+                        }
+
+                        @Override
+                        public void onFailure(Call<LlegadaRuta> call, Throwable t) {
+                            Log.d("Success",t.getMessage());
+                            return;
+                        }
+                    });
+                    Toast.makeText(getActivity(), "Ruta de llegada registrada!", Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(view).navigate(R.id.action_rutaLlegadaChecklistFragment_to_homeFragment);
                 }
             });

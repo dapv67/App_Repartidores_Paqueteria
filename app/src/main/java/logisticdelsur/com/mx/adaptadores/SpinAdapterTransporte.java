@@ -44,7 +44,6 @@ public class SpinAdapterTransporte extends ArrayAdapter<Transporte> {
         TextView label = (TextView) super.getView(position, convertView, parent);
         label.setTextColor(Color.BLACK);
         label.setText(values.get(position).getPlaca());
-
         return label;
     }
 
@@ -54,7 +53,6 @@ public class SpinAdapterTransporte extends ArrayAdapter<Transporte> {
         TextView label = (TextView) super.getDropDownView(position, convertView, parent);
         label.setTextColor(Color.BLACK);
         label.setText(values.get(position).getPlaca());
-
         return label;
     }
 }

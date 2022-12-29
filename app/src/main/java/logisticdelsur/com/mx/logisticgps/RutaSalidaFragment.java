@@ -2,12 +2,16 @@ package logisticdelsur.com.mx.logisticgps;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -25,9 +29,14 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import logisticdelsur.com.mx.api.interfaces.ISalida;
+import logisticdelsur.com.mx.api.modelo.SalidaModelo;
+import logisticdelsur.com.mx.api.modelo.SalidaRuta;
 import logisticdelsur.com.mx.api.services.ServiceHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,7 +60,7 @@ public class RutaSalidaFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private Button               btnEscanear, btnRegistrarPaquetes;
+    private Button               btnEscanear;
     private TextView             txtTotalPaquetes                 ;
     private ListView             listViewPaquetes                 ;
     private ArrayAdapter<String> adaptador                        ;
@@ -96,14 +105,14 @@ public class RutaSalidaFragment extends Fragment {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null) {
             if(result.getContents() == null) {
-                Toast.makeText(getContext(), "Cancelado", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Cancelado", Toast.LENGTH_LONG).show();
             } else {
                 listaPaquetes    .add(result.getContents());
                 adaptador        = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,listaPaquetes);
                 listViewPaquetes .setAdapter(adaptador);
                 txtTotalPaquetes .setText( "Paquetes: " + listaPaquetes.size());
 
-                Toast.makeText(getContext(), "Escaneado : " + result.getContents(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Escaneado : " + result.getContents(), Toast.LENGTH_LONG).show();
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -136,11 +145,11 @@ public class RutaSalidaFragment extends Fragment {
         listaPaquetes.remove(position);
         adaptador.notifyDataSetChanged();
         txtTotalPaquetes.setText("Paquetes: " + listaPaquetes.size());
-        Toast.makeText(getContext(), "Eliminado", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "Eliminado", Toast.LENGTH_SHORT).show();
     }
 
     public void cancelar(){
-        Toast.makeText(getContext(), "Cancelado", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "Cancelado", Toast.LENGTH_SHORT).show();
     }
 
     private View.OnClickListener btnEscanearHandler = new View.OnClickListener() {
@@ -154,17 +163,47 @@ public class RutaSalidaFragment extends Fragment {
         }
     };
 
-    private View.OnClickListener btnRegistrarPaquetesHandler = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            // call Api
-            //api.registrarPaquetes(listaPaquetes);
-        }
-    };
-
     private View.OnClickListener btnSalidaRutaHandler = new View.OnClickListener() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onClick(View view) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://api.logisticdelsur.com.mx/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            String ruta = preferences.getString("ruta","No hay ruta ");
+            String transporte = preferences.getString("transporte","No hay transporte ");
+            String username = preferences.getString("username","No hay username ");
+
+            SharedPreferences.Editor editor = preferences.edit();
+            LocalTime tiempoSalida = LocalTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            String aux = tiempoSalida.format(formatter);
+            editor.putString("tiempoSalida", aux);
+            editor.commit();
+
+            SalidaRuta salidaRuta = new SalidaRuta(ruta,transporte,username,listaPaquetes);
+            ISalida iSalida = retrofit.create(ISalida.class);
+            Call<SalidaRuta> call = iSalida.setSalidaRuta(salidaRuta);
+
+            call.enqueue(new Callback<SalidaRuta>() {
+                @Override
+                public void onResponse(Call<SalidaRuta> call, Response<SalidaRuta> response) {
+                    if(!response.isSuccessful()){
+                        Log.d("Success","Falló");
+                        return;
+                    }
+                    Log.d("Success","Con éxito");
+                }
+
+                @Override
+                public void onFailure(Call<SalidaRuta> call, Throwable t) {
+                    Log.d("Success",t.getMessage());
+                    return;
+                }
+            });
+            Toast.makeText(getActivity(), "Ruta de salida registrada!", Toast.LENGTH_SHORT).show();
             Navigation.findNavController(view).navigate(R.id.action_rutaSalidaFragment_to_homeFragment);
         }
     };
@@ -185,10 +224,8 @@ public class RutaSalidaFragment extends Fragment {
         btnEscanear          = view.findViewById(R.id.btnEscanear);
         txtTotalPaquetes     = view.findViewById(R.id.txtTotalPaquetes);
         listViewPaquetes     = view.findViewById(R.id.listRegistrarPaquetes);
-        btnRegistrarPaquetes = view.findViewById(R.id.btn_registrarSalidaRuta);
 
         btnEscanear          .setOnClickListener(btnEscanearHandler);
         listViewPaquetes     .setOnItemClickListener(listViewEliminarHandler);
-        btnRegistrarPaquetes .setOnClickListener(btnRegistrarPaquetesHandler);
     }
 }

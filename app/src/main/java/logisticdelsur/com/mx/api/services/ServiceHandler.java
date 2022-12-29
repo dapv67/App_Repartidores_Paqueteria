@@ -24,9 +24,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceHandler {
 
-    private       Retrofit  retrofit;
-    private final String    BASE_URL = "http://api.logisticdelsur.com.mx/";
-    //private final String    BASE_URL = "https://jsonplaceholder.typicode.com/";
+    private static Retrofit  retrofit;
+    private static final String    BASE_URL = "http://api.logisticexpressdelsur.com/";
+    //private static final String    BASE_URL = "https://jsonplaceholder.typicode.com/";
+
+    public static ISalida createService(){
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        return retrofit.create(ISalida.class);
+    }
 
     public ServiceHandler(){
         retrofit = new Retrofit.Builder()
@@ -59,22 +67,19 @@ public class ServiceHandler {
         List<EjemploModelo>              resultado = new ArrayList<>();
         ISalida                   iSalida   = retrofit.create(ISalida.class);
         Call<List<EjemploModelo>>  call      = iSalida.listEjemplo();
-
         call.enqueue(new Callback<List<EjemploModelo>>() {
             @Override
             public void onResponse(Call<List<EjemploModelo>> call, Response<List<EjemploModelo>> response) {
-                Log.d("success", response.body().toString());
                 resultado.addAll(response.body());
+                Log.d("success", "ServiceHandler: " + resultado.toString());
             }
 
             @Override
             public void onFailure(Call<List<EjemploModelo>> call, Throwable t) {
-
                 Log.d("success", "error en la api");
                 return;
             }
         });
-
         return resultado;
     }
 
