@@ -135,7 +135,7 @@ public class RutaLlegadaChecklistFragment extends Fragment {
         checkBox         = new CheckBox[26];
 
         spinnerNivelGasolina = view.findViewById(R.id.spinnerNivelGasolina)      ;
-        txtKMLlegada         = view.findViewById(R.id.txtKMLlegada)              ;
+        //txtKMLlegada         = view.findViewById(R.id.txtKMLlegada)              ;
         btnCheckLlegada      = view.findViewById(R.id.btn_checkLlegadaRuta)      ;
         btnCheckLlegada      .setOnClickListener(btnRegistrarCheckLlegadaHandler);
 
