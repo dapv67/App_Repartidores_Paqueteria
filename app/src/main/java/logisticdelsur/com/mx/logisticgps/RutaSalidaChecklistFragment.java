@@ -53,17 +53,17 @@ public class RutaSalidaChecklistFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private Spinner                        spinnerRutaSalida       ;
-    private Spinner                        spinnerTransporteSalida ;
+    //private Spinner                        spinnerRutaSalida       ;
+    //private Spinner                        spinnerTransporteSalida ;
     private Button                         btnRegistrarCheckSalida ;
     private CheckBox[]                     checkBox                ;
 
     private List<String>                   listaCheckboxes         ;
     private Map<Integer, String>           parametrosSalida        ;
-    private List<Transporte>               transportesData         ;
-    private List<Ruta>                     rutaData                ;
-    private ArrayAdapter<Transporte>       transportesAdaptador    ;
-    private ArrayAdapter<Ruta>             rutaAdaptador           ;
+    //private List<Transporte>               transportesData         ;
+    //private List<Ruta>                     rutaData                ;
+    //private ArrayAdapter<Transporte>       transportesAdaptador    ;
+    //private ArrayAdapter<Ruta>             rutaAdaptador           ;
     private ServiceHandler                 api                     ;
 
     public RutaSalidaChecklistFragment() {
@@ -195,20 +195,20 @@ public class RutaSalidaChecklistFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        transportesData      = new ArrayList<>();
-        rutaData             = new ArrayList<>();
+        //transportesData      = new ArrayList<>();
+        //rutaData             = new ArrayList<>();
         parametrosSalida     = new HashMap<>();
         listaCheckboxes      = new ArrayList<>();
         checkBox             = new CheckBox[26] ;
         api                  = new ServiceHandler();
-        transportesAdaptador = new SpinAdapterTransporte(getContext(),
+        /*transportesAdaptador = new SpinAdapterTransporte(getContext(),
                                                          android.R.layout.simple_dropdown_item_1line,
                                                          transportesData);
         rutaAdaptador        = new SpinAdapterRuta(getContext(),
                                                   android.R.layout.simple_dropdown_item_1line,
-                                                  rutaData);
+                                                  rutaData);*/
 
-        Transporte t0 = new Transporte(); t0.setId_transporte(0); t0.setPlaca("Seleccione un transporte");
+       /* Transporte t0 = new Transporte(); t0.setId_transporte(0); t0.setPlaca("Seleccione un transporte");
         Transporte t1 = new Transporte(); t1.setId_transporte(1); t1.setPlaca("MVP-23-12");
         Transporte t2 = new Transporte(); t2.setId_transporte(2); t2.setPlaca("JNL-05-02");
         Transporte t3 = new Transporte(); t3.setId_transporte(3); t3.setPlaca("NPZ-81-20");
@@ -221,7 +221,7 @@ public class RutaSalidaChecklistFragment extends Fragment {
         //transportesData     .addAll(api.getTransportes());
         transportesAdaptador.notifyDataSetChanged();
         //rutaData            .addAll(api.getRutas());
-        rutaAdaptador       .notifyDataSetChanged();
+        rutaAdaptador       .notifyDataSetChanged(); */
 
 
 
@@ -229,12 +229,12 @@ public class RutaSalidaChecklistFragment extends Fragment {
         createHashMap();
 
         btnRegistrarCheckSalida = view.findViewById(R.id.btn_checkSalidaRuta);
-        spinnerRutaSalida       = view.findViewById(R.id.spinnerNivelGasolina);
-        spinnerTransporteSalida = view.findViewById(R.id.spinnerTransporteSalida);
+        //spinnerRutaSalida       = view.findViewById(R.id.spinnerNivelGasolina);
+        //spinnerTransporteSalida = view.findViewById(R.id.spinnerTransporteSalida);
 
         btnRegistrarCheckSalida.setOnClickListener(btnRegistrarCheckSalidaHandler);
-        spinnerTransporteSalida.setAdapter(transportesAdaptador);
-        spinnerRutaSalida      .setAdapter(rutaAdaptador);
+        //spinnerTransporteSalida.setAdapter(transportesAdaptador);
+        //spinnerRutaSalida      .setAdapter(rutaAdaptador);
 
         crearCheckBoxes(view);
 

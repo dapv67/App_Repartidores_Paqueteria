@@ -12,23 +12,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/spinnerNivelGasolina"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:entries="@array/gasolina" />
-
-        <EditText
-            android:id="@+id/txtKMLlegada"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="KM en el tablero"
-            android:inputType="number" />
-
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textTotalEntregas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
