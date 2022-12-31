@@ -80,4 +80,7 @@ public interface ISalida {
 
     @POST("Bodega/Entrega")
     Call<Entrega> setEntrega(@Body Entrega entrega);
+
+    @POST("Bodega/Entrega/Batch")
+    Call<Entrega> guardarEntregasBatch(@Body List<Entrega> entregas);
 }

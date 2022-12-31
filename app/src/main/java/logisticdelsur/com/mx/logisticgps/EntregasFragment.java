@@ -55,10 +55,10 @@ public class EntregasFragment extends Fragment {
 
     private Spinner spinnerNivelGasolina;
 
-    private Button   btnEscanearEntrega;
+    private Button btnEscanearEntrega;
     private TextView txtEntregaPaquete;
-    private Button   btnGuardarStatusPaquetes;
-    private Button   btnEntregasPendientes;
+    private Button btnGuardarStatusPaquetes;
+    private Button btnEntregasPendientes;
 
     public EntregasFragment() {
         // Required empty public constructor
@@ -105,14 +105,14 @@ public class EntregasFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null) {
-            if(result.getContents() == null) {
+        if (result != null) {
+            if (result.getContents() == null) {
                 //Toast.makeText(getContext(), "Cancelado", Toast.LENGTH_LONG).show();
             } else {
                 txtEntregaPaquete.setText(result.getContents());
                 //Toast.makeText(getContext(), "Escaneado : " + result.getContents(), Toast.LENGTH_LONG).show();
             }
-        }else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -126,30 +126,35 @@ public class EntregasFragment extends Fragment {
                     .baseUrl("http://api.logisticdelsur.com.mx/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-            Entrega entrega = new Entrega(paquete,status);
+            Entrega entrega = new Entrega(paquete, status);
             ISalida iSalida = retrofit.create(ISalida.class);
             Call<Entrega> call = iSalida.setEntrega(entrega);
 
             call.enqueue(new Callback<Entrega>() {
                 @Override
                 public void onResponse(Call<Entrega> call, Response<Entrega> response) {
-                    Log.d("Success","Con éxito");
+                    Log.d("Success", "Con éxito");
+                    Toast.makeText(getActivity(), "Entrega registrada!", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(Call<Entrega> call, Throwable t) {
                     SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
-                    String pendientes = preferences.getString("pendientes","");
-                    pendientes = pendientes+",{paquete:'"+paquete+"',status:'"+status+"'}";
+                    String pendientes = preferences.getString("pendientes", "");
+                    if (!pendientes.equals("")) {
+                        pendientes = pendientes + ",";
+                    }
+                    pendientes = pendientes + "{paquete:'" + paquete + "',status:'" + status + "'}";
                     //Toast.makeText(getContext(),"Pendientes: "+pendientes,Toast.LENGTH_SHORT).show();
                     editor.putString("pendientes", pendientes);
                     editor.commit();
-                    Log.d("Success",t.getMessage());
+                    Log.d("Success", t.getMessage());
+                    Toast.makeText(getActivity(), "Sin internet. Se ha guardado en los paquetes pendientes.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             });
-            Toast.makeText(getActivity(), "Entrega registrada!", Toast.LENGTH_SHORT).show();
+
             Navigation.findNavController(view).navigate(R.id.action_entregasFragment_to_homeFragment);
         }
     };
@@ -167,6 +172,7 @@ public class EntregasFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_entregas, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -180,7 +186,7 @@ public class EntregasFragment extends Fragment {
         btnEntregasPendientes = view.findViewById(R.id.btn_entregasPendientes);
         btnEntregasPendientes.setOnClickListener(btnEntregasPendientesHandler);
 
-        btnGuardarStatusPaquetes= view.findViewById(R.id.btn_GuardarStatusPaquetes);
+        btnGuardarStatusPaquetes = view.findViewById(R.id.btn_GuardarStatusPaquetes);
         btnGuardarStatusPaquetes.setOnClickListener(btnRegistrarEntregaHandler);
     }
 }

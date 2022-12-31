@@ -95,60 +95,41 @@ public class LoginFragment extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(username.getText().length() == 0){
-                    Toast.makeText(getContext(),"Ingrese el usuario",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(password.getText().length() == 0){
-                    Toast.makeText(getContext(),"Ingrese la contraseña",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                ISalida iSalida = ServiceHandler.createService();
-                Call<UserModelo> call = iSalida.verificarUsuario(username.getText().toString(),password.getText().toString());
-                call.enqueue(new Callback<UserModelo>() {
-                    @Override
-                    public void onResponse(Call<UserModelo> call, Response<UserModelo> response) {
-                        if(response.isSuccessful()){
-                            if(response.body().getRol().equals("chofer") || response.body().getRol().equals("admin")){
-                                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
-                            }
-                        }
-                        else{
-                            Toast.makeText(getActivity(),"Usuario no encontrado",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<UserModelo> call, Throwable t) {
-                        Toast.makeText(getActivity(),"Error: No se puede establecer conexión con la BD",Toast.LENGTH_LONG).show();
-                        Log.d("error", t.toString());
+                try {
+                    if (username.getText().length() == 0) {
+                        Toast.makeText(getContext(), "Ingrese el usuario", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                });
-                /*
+                    if (password.getText().length() == 0) {
+                        Toast.makeText(getContext(), "Ingrese la contraseña", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    ISalida iSalida = ServiceHandler.createService();
+                    Call<UserModelo> call = iSalida.verificarUsuario(username.getText().toString(), password.getText().toString());
+                    call.enqueue(new Callback<UserModelo>() {
+                        @Override
+                        public void onResponse(Call<UserModelo> call, Response<UserModelo> response) {
+                            if (response.isSuccessful()) {
+                                if ("chofer".equals(response.body().getRol()) || "admin".equals(response.body().getRol())) {
+                                    Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
+                                } else {
+                                    Toast.makeText(getActivity(), "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(getActivity(), "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
-                else {
-                    if(username.getText().toString().equals("rodolfo") && password.getText().toString().equals("123")){
-                        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("username","RODOLFO");
-                        editor.commit();
-                        Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
-                    }
-                    else {
-                        if(username.getText().toString().equals("juan") && password.getText().toString().equals("123")){
-                            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putString("username","JUAN");
-                            editor.commit();
-                            Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
+                        @Override
+                        public void onFailure(Call<UserModelo> call, Throwable t) {
+                            Toast.makeText(getActivity(), "Error: No se puede establecer conexión con el sistema", Toast.LENGTH_LONG).show();
+                            Log.d("error", t.toString());
+                            return;
                         }
-                        else{
-                            Toast.makeText(getContext(),"Credenciales incorrectas",Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                    });
+                }catch (Exception e) {
+                    Toast.makeText(getActivity(), "Error: Credenciales incorrectas", Toast.LENGTH_LONG).show();
                 }
-                */
             }
         });
 

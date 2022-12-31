@@ -8,66 +8,47 @@
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
+        android:id="@+id/entregas_pendientes_main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/numero_paquetes_pendientes_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Paquetes: 0"
             android:textSize="20sp"
-            android:text="Paquetes: 24" />
+            android:visibility="visible" />
 
         <ScrollView
+            android:id="@+id/entregas_pendientes_scrollview"
             android:layout_width="match_parent"
-            android:layout_marginTop="24dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp">
 
             <LinearLayout
+                android:id="@+id/entregas_pendientes_scrolllayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/scroll_text"
-                    android:text="78238327464" />
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="match_parent"
-                    style="@style/scroll_text"
-                    android:layout_height="wrap_content"
-                    android:text="78238327464" />
-                <TextView
-                    android:id="@+id/textTotalEntregas"
-                    android:layout_width="match_parent"
-                    style="@style/scroll_text"
-                    android:layout_height="wrap_content"
-                    android:text="78238327464" />
-                <TextView
-                    android:id="@+id/txtEntregaPaquete"
-                    android:layout_width="match_parent"
-                    style="@style/scroll_text"
-                    android:layout_height="wrap_content"
-                    android:text="78238327464" />
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="match_parent"
-                    style="@style/scroll_text"
-                    android:layout_height="wrap_content"
-                    android:text="78238327464" />
-
-            </LinearLayout>
+                android:orientation="vertical" />
         </ScrollView>
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
+
+        <ProgressBar
+            android:id="@+id/progressBarPendientes"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
+
         <Button
             android:id="@+id/btn_SincronizarEntregasPendientes"
             android:layout_width="match_parent"

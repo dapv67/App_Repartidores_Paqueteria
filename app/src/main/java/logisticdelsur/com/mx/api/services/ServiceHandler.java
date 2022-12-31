@@ -24,11 +24,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceHandler {
 
-    private static Retrofit  retrofit;
-    private static final String    BASE_URL = "http://api.logisticexpressdelsur.com/";
-    //private static final String    BASE_URL = "https://jsonplaceholder.typicode.com/";
+    private static Retrofit retrofit;
+    private static final String BASE_URL = "http://api.logisticexpressdelsur.com/";
 
-    public static ISalida createService(){
+    public static ISalida createService() {
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -36,7 +35,7 @@ public class ServiceHandler {
         return retrofit.create(ISalida.class);
     }
 
-    public ServiceHandler(){
+    public ServiceHandler() {
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -44,9 +43,9 @@ public class ServiceHandler {
     }
 
     public List<SalidaModelo> listSalidas() {
-        List<SalidaModelo>        resultado = new ArrayList<>();
-        ISalida                   iSalida   = retrofit.create(ISalida.class);
-        Call<List<SalidaModelo>>  call      = iSalida.listSalidas();
+        List<SalidaModelo> resultado = new ArrayList<>();
+        ISalida iSalida = retrofit.create(ISalida.class);
+        Call<List<SalidaModelo>> call = iSalida.listSalidas();
 
         call.enqueue(new Callback<List<SalidaModelo>>() {
             @Override
@@ -63,10 +62,10 @@ public class ServiceHandler {
         return resultado;
     }
 
-    public List<EjemploModelo> listEjemplo(){
-        List<EjemploModelo>              resultado = new ArrayList<>();
-        ISalida                   iSalida   = retrofit.create(ISalida.class);
-        Call<List<EjemploModelo>>  call      = iSalida.listEjemplo();
+    public List<EjemploModelo> listEjemplo() {
+        List<EjemploModelo> resultado = new ArrayList<>();
+        ISalida iSalida = retrofit.create(ISalida.class);
+        Call<List<EjemploModelo>> call = iSalida.listEjemplo();
         call.enqueue(new Callback<List<EjemploModelo>>() {
             @Override
             public void onResponse(Call<List<EjemploModelo>> call, Response<List<EjemploModelo>> response) {
@@ -83,10 +82,10 @@ public class ServiceHandler {
         return resultado;
     }
 
-    public List<EstadosModelo> getEstados(){
-        List<EstadosModelo>              resultado = new ArrayList<>();
-        ISalida                   iSalida   = retrofit.create(ISalida.class);
-        Call<List<EstadosModelo>>  call      = iSalida.getEstados();
+    public List<EstadosModelo> getEstados() {
+        List<EstadosModelo> resultado = new ArrayList<>();
+        ISalida iSalida = retrofit.create(ISalida.class);
+        Call<List<EstadosModelo>> call = iSalida.getEstados();
 
         call.enqueue(new Callback<List<EstadosModelo>>() {
             @Override
@@ -106,11 +105,11 @@ public class ServiceHandler {
         return resultado;
     }
 
-    public List<CiudadesModelo> getCiudades(){
-        List<CiudadesModelo>         resultado   = new ArrayList<>();
-        ISalida                     iSalida     = retrofit.create(ISalida.class);
-        String                      estado      = "Colima";
-        Call<List<CiudadesModelo>>  call        = iSalida.getCiudades(estado);
+    public List<CiudadesModelo> getCiudades() {
+        List<CiudadesModelo> resultado = new ArrayList<>();
+        ISalida iSalida = retrofit.create(ISalida.class);
+        String estado = "Colima";
+        Call<List<CiudadesModelo>> call = iSalida.getCiudades(estado);
 
         call.enqueue(new Callback<List<CiudadesModelo>>() {
             @Override
@@ -130,11 +129,11 @@ public class ServiceHandler {
         return resultado;
     }
 
-    public List<Transporte> getTransportes(){
-        List<Transporte>        resultado   = new ArrayList<>();
-        ISalida                 iSalida     = retrofit.create(ISalida.class);
-        String                  porteo      = "1";
-        Call<List<Transporte>>  call        = iSalida.getTransportes(porteo);
+    public List<Transporte> getTransportes() {
+        List<Transporte> resultado = new ArrayList<>();
+        ISalida iSalida = retrofit.create(ISalida.class);
+        String porteo = "1";
+        Call<List<Transporte>> call = iSalida.getTransportes(porteo);
         call.enqueue(new Callback<List<Transporte>>() {
             @Override
             public void onResponse(Call<List<Transporte>> call, Response<List<Transporte>> response) {
