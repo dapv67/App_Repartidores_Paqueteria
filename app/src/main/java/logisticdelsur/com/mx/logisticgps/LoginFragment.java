@@ -28,6 +28,7 @@ import logisticdelsur.com.mx.api.modelo.CiudadesModelo;
 import logisticdelsur.com.mx.api.modelo.Transporte;
 import logisticdelsur.com.mx.api.modelo.UserModelo;
 import logisticdelsur.com.mx.api.modelo.Vector;
+import logisticdelsur.com.mx.api.requets.LoginRequest;
 import logisticdelsur.com.mx.api.services.ServiceHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -105,7 +106,7 @@ public class LoginFragment extends Fragment {
                         return;
                     }
                     ISalida iSalida = ServiceHandler.createService();
-                    Call<UserModelo> call = iSalida.verificarUsuario(username.getText().toString(), password.getText().toString());
+                    Call<UserModelo> call = iSalida.verificarUsuario(new LoginRequest(username.getText().toString(),password.getText().toString()));
                     call.enqueue(new Callback<UserModelo>() {
                         @Override
                         public void onResponse(Call<UserModelo> call, Response<UserModelo> response) {
@@ -113,11 +114,14 @@ public class LoginFragment extends Fragment {
                                 if ("chofer".equals(response.body().getRol()) || "admin".equals(response.body().getRol())) {
                                     Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
                                 } else {
-                                    Toast.makeText(getActivity(), "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Credenciales incorrectas.", Toast.LENGTH_SHORT).show();
                                 }
+                                Log.d("error", response.body().toString());
                             } else {
-                                Toast.makeText(getActivity(), "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Credenciales incorrectas...", Toast.LENGTH_SHORT).show();
                             }
+                            Log.d("error", String.valueOf(response.code()));
+
                         }
 
                         @Override

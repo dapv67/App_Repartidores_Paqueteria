@@ -30,6 +30,7 @@ import java.util.List;
 
 import logisticdelsur.com.mx.api.interfaces.ISalida;
 import logisticdelsur.com.mx.api.modelo.Entrega;
+import logisticdelsur.com.mx.api.responses.StandardResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -120,15 +121,15 @@ public class EntregasPendientesFragment extends Fragment {
                 progressBar.setVisibility(View.VISIBLE);
 
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://api.logisticdelsur.com.mx/")
+                        .baseUrl("https://api.logisticexpressdelsur.com/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 ISalida iSalida = retrofit.create(ISalida.class);
 
-                Call<Entrega> call = iSalida.guardarEntregasBatch(entregasPendientes);
-                call.enqueue(new Callback<Entrega>() {
+                Call<StandardResponse> call = iSalida.guardarEntregasBatch(entregasPendientes);
+                call.enqueue(new Callback<StandardResponse>() {
                     @Override
-                    public void onResponse(Call<Entrega> call, Response<Entrega> response) {
+                    public void onResponse(Call<StandardResponse> call, Response<StandardResponse> response) {
                         Log.d("Success", "Con éxito");
                         Toast.makeText(getActivity(), "Entrega registrada!", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.INVISIBLE);
@@ -139,7 +140,7 @@ public class EntregasPendientesFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Call<Entrega> call, Throwable t) {
+                    public void onFailure(Call<StandardResponse> call, Throwable t) {
                         progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(getActivity(), "No fue posible guardar en el sistema intente otra vez.", Toast.LENGTH_SHORT).show();
                         return;

@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import java.util.List;
 import logisticdelsur.com.mx.api.interfaces.ISalida;
 import logisticdelsur.com.mx.api.modelo.Entrega;
 import logisticdelsur.com.mx.api.modelo.SalidaRuta;
+import logisticdelsur.com.mx.api.responses.StandardResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -123,22 +125,22 @@ public class EntregasFragment extends Fragment {
             String status = spinnerNivelGasolina.getSelectedItem().toString();
             String paquete = (String) txtEntregaPaquete.getText();
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://api.logisticdelsur.com.mx/")
+                    .baseUrl("https://api.logisticexpressdelsur.com/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             Entrega entrega = new Entrega(paquete, status);
             ISalida iSalida = retrofit.create(ISalida.class);
-            Call<Entrega> call = iSalida.setEntrega(entrega);
+            Call<StandardResponse> call = iSalida.setEntrega(entrega);
 
-            call.enqueue(new Callback<Entrega>() {
+            call.enqueue(new Callback<StandardResponse>() {
                 @Override
-                public void onResponse(Call<Entrega> call, Response<Entrega> response) {
-                    Log.d("Success", "Con éxito");
+                public void onResponse(Call<StandardResponse> call, Response<StandardResponse> response) {
+                    Log.d("Success", response.body().toString());
                     Toast.makeText(getActivity(), "Entrega registrada!", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
-                public void onFailure(Call<Entrega> call, Throwable t) {
+                public void onFailure(Call<StandardResponse> call, Throwable t) {
                     SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     String pendientes = preferences.getString("pendientes", "");

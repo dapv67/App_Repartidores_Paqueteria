@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceHandler {
 
     private static Retrofit retrofit;
-    private static final String BASE_URL = "http://api.logisticexpressdelsur.com/";
+    private static final String BASE_URL = "https://api.logisticexpressdelsur.com/";
 
     public static ISalida createService() {
         retrofit = new Retrofit.Builder()
