@@ -1,6 +1,5 @@
 package logisticdelsur.com.mx.api.interfaces;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import logisticdelsur.com.mx.api.modelo.EjemploModelo;
@@ -14,7 +13,7 @@ import logisticdelsur.com.mx.api.modelo.SalidaModelo;
 import logisticdelsur.com.mx.api.modelo.Transporte;
 import logisticdelsur.com.mx.api.modelo.UserModelo;
 import logisticdelsur.com.mx.api.modelo.Vector;
-import logisticdelsur.com.mx.api.requets.LoginRequest;
+import logisticdelsur.com.mx.api.requests.LoginRequest;
 import logisticdelsur.com.mx.api.responses.StandardResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;

@@ -17,24 +17,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import logisticdelsur.com.mx.api.interfaces.ISalida;
-import logisticdelsur.com.mx.api.modelo.EjemploModelo;
-import logisticdelsur.com.mx.api.modelo.Entrega;
-import logisticdelsur.com.mx.api.modelo.EstadosModelo;
-import logisticdelsur.com.mx.api.modelo.CiudadesModelo;
-import logisticdelsur.com.mx.api.modelo.Transporte;
 import logisticdelsur.com.mx.api.modelo.UserModelo;
-import logisticdelsur.com.mx.api.modelo.Vector;
-import logisticdelsur.com.mx.api.requets.LoginRequest;
+import logisticdelsur.com.mx.api.requests.LoginRequest;
 import logisticdelsur.com.mx.api.services.ServiceHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.widget.Toast.makeText;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -1,4 +1,4 @@
-package logisticdelsur.com.mx.api.requets;
+package logisticdelsur.com.mx.api.requests;
 
 
 public class LoginRequest {
