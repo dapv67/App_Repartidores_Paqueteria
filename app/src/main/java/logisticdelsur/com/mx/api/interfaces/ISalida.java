@@ -14,6 +14,7 @@ import logisticdelsur.com.mx.api.modelo.Transporte;
 import logisticdelsur.com.mx.api.modelo.UserModelo;
 import logisticdelsur.com.mx.api.modelo.Vector;
 import logisticdelsur.com.mx.api.requests.LoginRequest;
+import logisticdelsur.com.mx.api.responses.SalidaRutaResponse;
 import logisticdelsur.com.mx.api.responses.StandardResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -27,6 +28,9 @@ public interface ISalida {
 
     @POST("VerifUser")
     Call<UserModelo> verificarUsuario(@Body LoginRequest loginRequest);
+
+    @GET("VerifUser")
+    Call<UserModelo> verificarUsuarioGet(@Query("inputUser")String inputUser, @Query("inputPassword") String inputPassword);
 
     @GET("transportes")
     Call<List<Transporte>> getTransportes(@Query("por") String por);
@@ -84,4 +88,7 @@ public interface ISalida {
 
     @POST("Bodega/Entrega/Batch")
     Call<StandardResponse> guardarEntregasBatch(@Body List<Entrega> entregas);
+
+    @GET("API/SalidaRuta")
+    Call<List<SalidaRutaResponse>> getSalidaRuta(@Query("Id_usuario") Integer Id_usuario);
 }

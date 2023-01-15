@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import logisticdelsur.com.mx.api.modelo.Ruta;
 import logisticdelsur.com.mx.adaptadores.SpinAdapterTransporte;
 import logisticdelsur.com.mx.api.modelo.Transporte;
 import logisticdelsur.com.mx.api.modelo.UserModelo;
+import logisticdelsur.com.mx.api.responses.SalidaRutaResponse;
 import logisticdelsur.com.mx.api.services.ServiceHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -124,56 +126,41 @@ public class RutaSalidaChecklistFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ruta_salida_checklist, container, false);
 
-        //transportesData      = new ArrayList<>();
-        //rutaData             = new ArrayList<>();
         parametrosSalida     = new HashMap<>();
         listaCheckboxes      = new ArrayList<>();
         checkBox             = new CheckBox[26] ;
         api                  = new ServiceHandler();
-        /* transportesAdaptador = new SpinAdapterTransporte(getContext(),
-                android.R.layout.simple_dropdown_item_1line,
-                transportesData);
-        rutaAdaptador        = new SpinAdapterRuta(getContext(),
-                android.R.layout.simple_dropdown_item_1line,
-                rutaData); */
+
+        TextView transporteView = view.findViewById(R.id.transporte_asignado_txt);
+        TextView rutasView = view.findViewById(R.id.rutas_text_view);
+
+        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String idUsuario = preferences.getString("Id_usuario", "0");
 
         ISalida iSalida = ServiceHandler.createService();
-        /* Call<List<Transporte>> call = iSalida.getTransportes("0");
-        call.enqueue(new Callback<List<Transporte>>() {
+        Call<List<SalidaRutaResponse>> call = iSalida.getSalidaRuta(Integer.parseInt(idUsuario));
+        call.enqueue(new Callback<List<SalidaRutaResponse>>() {
             @Override
-            public void onResponse(Call<List<Transporte>> call, Response<List<Transporte>> response) {
+            public void onResponse(Call<List<SalidaRutaResponse>> call, Response<List<SalidaRutaResponse>> response) {
                 if(response.isSuccessful()){
                     Log.d("success", "onResponse: " + response.body().toString());
-                    Transporte t0 = new Transporte(); t0.setId_transporte(0); t0.setPlaca("Seleccione un transporte");
-                    transportesData.add(t0);
-                    transportesData.addAll(response.body());
-                    transportesAdaptador.notifyDataSetChanged();
+                    transporteView.setText(response.body().get(0).getPlaca());
+                    rutasView.setText(response.body().get(0).getRutas());
+                    btnRegistrarCheckSalida.setEnabled(Boolean.TRUE);
                 }
                 else{
-                    Toast.makeText(getActivity(),"Transportes no encontrados",Toast.LENGTH_SHORT).show();
+                    btnRegistrarCheckSalida.setEnabled(Boolean.FALSE);
+                    Toast.makeText(getActivity(),"No hay salida a ruta activa",Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Transporte>> call, Throwable t) {
+            public void onFailure(Call<List<SalidaRutaResponse>> call, Throwable t) {
                 Toast.makeText(getActivity(),"Error: No se puede establecer conexión con la BD",Toast.LENGTH_LONG).show();
                 Log.d("error", t.toString());
                 return;
             }
         });
-
-        Ruta r0 = new Ruta(); r0.setId_ruta(1); r0.setNombre("Seleccione una ruta"); r0.setPorteo_perteneciente(1);
-        Ruta r1 = new Ruta(); r1.setId_ruta(1); r1.setNombre("L01"); r1.setPorteo_perteneciente(1);
-        Ruta r2 = new Ruta(); r2.setId_ruta(2); r2.setNombre("F01"); r2.setPorteo_perteneciente(1);
-        rutaData.add(r0); rutaData.add(r1); rutaData.add(r2); */
-        // OBTENER DATOS DE LA API
-        //transportesData     .addAll(api.getTransportes());
-
-        //rutaData            .addAll(api.getRutas());
-        //rutaAdaptador       .notifyDataSetChanged();
-
-
-
 
         createHashMap();
 

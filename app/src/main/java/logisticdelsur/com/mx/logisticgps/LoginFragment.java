@@ -95,12 +95,16 @@ public class LoginFragment extends Fragment {
                         return;
                     }
                     ISalida iSalida = ServiceHandler.createService();
-                    Call<UserModelo> call = iSalida.verificarUsuario(new LoginRequest(username.getText().toString(),password.getText().toString()));
+                    Call<UserModelo> call = iSalida.verificarUsuarioGet(username.getText().toString(),password.getText().toString());
                     call.enqueue(new Callback<UserModelo>() {
                         @Override
                         public void onResponse(Call<UserModelo> call, Response<UserModelo> response) {
                             if (response.isSuccessful()) {
                                 if ("chofer".equals(response.body().getRol()) || "admin".equals(response.body().getRol())) {
+                                    SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.putString("Id_usuario", response.body().getId_usuario());
+                                    editor.commit();
                                     Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
                                 } else {
                                     Toast.makeText(getActivity(), "Credenciales incorrectas.", Toast.LENGTH_SHORT).show();

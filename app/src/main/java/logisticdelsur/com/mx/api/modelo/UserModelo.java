@@ -4,6 +4,7 @@ public class UserModelo {
     private int Id_porteo;
     private String rol;
     private String username;
+    private String Id_usuario;
 
     public int getId_porteo() {
         return Id_porteo;
@@ -15,6 +16,26 @@ public class UserModelo {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setId_porteo(int id_porteo) {
+        Id_porteo = id_porteo;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getId_usuario() {
+        return Id_usuario;
+    }
+
+    public void setId_usuario(String id_usuario) {
+        Id_usuario = id_usuario;
     }
 
     @Override
