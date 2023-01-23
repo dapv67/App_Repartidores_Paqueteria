@@ -36,6 +36,7 @@ import logisticdelsur.com.mx.adaptadores.SpinAdapterTransporte;
 import logisticdelsur.com.mx.api.modelo.Transporte;
 import logisticdelsur.com.mx.api.modelo.UserModelo;
 import logisticdelsur.com.mx.api.responses.SalidaRutaResponse;
+import logisticdelsur.com.mx.api.responses.StandardResponse;
 import logisticdelsur.com.mx.api.services.ServiceHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -111,13 +112,26 @@ public class RutaSalidaChecklistFragment extends Fragment {
                         listaCheckboxes.add(parametrosSalida.get(i));
                     }
                 }
-                // call api
-            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("checklist",listaCheckboxes.toString());
-            //editor.putString("transporte",spinnerTransporteSalida.getSelectedItem().toString());
-            //editor.putString("ruta",spinnerRutaSalida.getSelectedItem().toString());
-            editor.commit();
+
+            ISalida iSalida = ServiceHandler.createService();
+            Call<StandardResponse> call = iSalida.registrarChecklistSalida();
+            call.enqueue(new Callback<StandardResponse>() {
+                @Override
+                public void onResponse(Call<StandardResponse> call, Response<StandardResponse> response) {
+                    Log.d("Success", "Con éxito");
+                    Toast.makeText(getActivity(), "Salida a ruta registrada.", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<StandardResponse> call, Throwable t) {
+                    Toast.makeText(getActivity(), "No fue posible conectar con el sistema.", Toast.LENGTH_SHORT).show();
+                    SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("checklist",listaCheckboxes.toString());
+                    editor.commit();
+                    return;
+                }
+            });
 
             Navigation.findNavController(view).navigate(R.id.action_rutaSalidaChecklistFragment_to_rutaSalidaFragment);
         }

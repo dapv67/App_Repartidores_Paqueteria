@@ -99,14 +99,33 @@ public class RutaLlegadaChecklistFragment extends Fragment {
         }
     }
 
-    private View.OnClickListener btnRegistrarCheckLlegadaHandler = new View.OnClickListener() {
+    private final View.OnClickListener btnRegistrarCheckLlegadaHandler = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+
+            ISalida iSalida = ServiceHandler.createService();
+            Call<StandardResponse> call = iSalida.registrarChecklistLlegada();
+            call.enqueue(new Callback<StandardResponse>() {
+                @Override
+                public void onResponse(Call<StandardResponse> call, Response<StandardResponse> response) {
+                    Log.d("Success", "Con éxito");
+                    Toast.makeText(getActivity(), "Llegada de ruta registrada.", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<StandardResponse> call, Throwable t) {
+                    Toast.makeText(getActivity(), "No fue posible conectar con el sistema.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            });
+            Map<String, Boolean> checks = new HashMap<>();
 
             listaCheckboxes.clear();
             for(int i=0; i<checkBox.length; i++){
                 if (checkBox[i].isChecked()) {
+                    //String name = getResources().getResourceEntryName(checkBox[i].getId());
                     listaCheckboxes.add(parametrosSalida.get(i));
+                    //checks.put(name ,Boolean.TRUE);
                 }
             }
 
