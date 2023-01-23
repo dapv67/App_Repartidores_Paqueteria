@@ -22,6 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -136,6 +138,7 @@ public class RutaSalidaChecklistFragment extends Fragment {
 
         SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         String idUsuario = preferences.getString("Id_usuario", "0");
+        SharedPreferences.Editor editor = preferences.edit();
 
         ISalida iSalida = ServiceHandler.createService();
         Call<List<SalidaRutaResponse>> call = iSalida.getSalidaRuta(Integer.parseInt(idUsuario));
@@ -144,9 +147,16 @@ public class RutaSalidaChecklistFragment extends Fragment {
             public void onResponse(Call<List<SalidaRutaResponse>> call, Response<List<SalidaRutaResponse>> response) {
                 if(response.isSuccessful()){
                     Log.d("success", "onResponse: " + response.body().toString());
-                    transporteView.setText(response.body().get(0).getPlaca());
-                    rutasView.setText(response.body().get(0).getRutas());
+                    SalidaRutaResponse salidaRutaResponse = response.body().get(0);
+                    transporteView.setText(salidaRutaResponse.getPlaca());
+                    rutasView.setText(salidaRutaResponse.getRutas());
                     btnRegistrarCheckSalida.setEnabled(Boolean.TRUE);
+
+                    editor.putInt("Id_salida_reparto",salidaRutaResponse.getId_salida_reparto());
+                    editor.putString("placa",salidaRutaResponse.getPlaca());
+                    editor.putInt("Id_transporte",salidaRutaResponse.getId_transporte());
+
+                    editor.commit();
                 }
                 else{
                     btnRegistrarCheckSalida.setEnabled(Boolean.FALSE);

@@ -33,6 +33,9 @@ import java.util.Map;
 import logisticdelsur.com.mx.api.interfaces.ISalida;
 import logisticdelsur.com.mx.api.modelo.LlegadaRuta;
 import logisticdelsur.com.mx.api.modelo.SalidaRuta;
+import logisticdelsur.com.mx.api.requests.ProgramarMantenimientoRequest;
+import logisticdelsur.com.mx.api.responses.ResultadosMesResponse;
+import logisticdelsur.com.mx.api.responses.StandardResponse;
 import logisticdelsur.com.mx.api.services.ServiceHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -100,32 +103,45 @@ public class RutaLlegadaChecklistFragment extends Fragment {
         @Override
         public void onClick(View view) {
 
-
-            //api.registrarLlegada(nivelGasolina,KM,listaCheckboxes.toString());
-
             listaCheckboxes.clear();
             for(int i=0; i<checkBox.length; i++){
                 if (checkBox[i].isChecked()) {
                     listaCheckboxes.add(parametrosSalida.get(i));
                 }
             }
-            // call api
-            //Toast.makeText(getContext(), listaCheckboxes.toString(), Toast.LENGTH_SHORT).show();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            String placa = preferences.getString("placa", "");
             builder.setTitle("Programación de mantenimientos");
-            builder.setMessage("¿Quieres programar un mantenimiento?");
+            builder.setMessage("¿Quieres programar un mantenimiento?\n"
+            + "\nTransporte: " + placa);
 
             builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("checklist",listaCheckboxes.toString());
-                    editor.putString("gas",spinnerNivelGasolina.getSelectedItem().toString());
-                    editor.putString("km",txtKMLlegada.getText().toString());
 
-                    //api.registrarMantenimiento();
+                    ProgramarMantenimientoRequest request = new ProgramarMantenimientoRequest();
+                    request.setPlaca(placa);
+                    request.setIdSalidaReparto(preferences.getInt("Id_salida_reparto",0));
+                    request.setIdTransporte(preferences.getInt("Id_transporte", 0));
+                    request.setIdUsuario(preferences.getInt("Id_usuario", 0));
+
+                    ISalida iSalida = ServiceHandler.createService();
+                    Call<StandardResponse> call = iSalida.programarMantenimiento(request);
+                    call.enqueue(new Callback<StandardResponse>() {
+                        @Override
+                        public void onResponse(Call<StandardResponse> call, Response<StandardResponse> response) {
+                            Log.d("Success", "Con éxito");
+                            Toast.makeText(getActivity(), "Mantenimiento registrado", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<StandardResponse> call, Throwable t) {
+                            Toast.makeText(getActivity(), "No fue posible conectar con el sistema.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    });
                     Navigation.findNavController(view).navigate(R.id.action_rutaLlegadaChecklistFragment_to_rutaMantenimientoFragment);
                 }
             });
@@ -191,7 +207,6 @@ public class RutaLlegadaChecklistFragment extends Fragment {
         checkBox         = new CheckBox[26];
 
         spinnerNivelGasolina = view.findViewById(R.id.spinnerNivelGasolina)      ;
-        //txtKMLlegada         = view.findViewById(R.id.txtKMLlegada)              ;
         btnCheckLlegada      = view.findViewById(R.id.btn_checkLlegadaRuta)      ;
         btnCheckLlegada      .setOnClickListener(btnRegistrarCheckLlegadaHandler);
 

@@ -14,6 +14,7 @@ import logisticdelsur.com.mx.api.modelo.Transporte;
 import logisticdelsur.com.mx.api.modelo.UserModelo;
 import logisticdelsur.com.mx.api.modelo.Vector;
 import logisticdelsur.com.mx.api.requests.LoginRequest;
+import logisticdelsur.com.mx.api.requests.ProgramarMantenimientoRequest;
 import logisticdelsur.com.mx.api.responses.ResultadosMesResponse;
 import logisticdelsur.com.mx.api.responses.SalidaRutaResponse;
 import logisticdelsur.com.mx.api.responses.StandardResponse;
@@ -103,5 +104,5 @@ public interface ISalida {
     Call<StandardResponse> registrarChecklistLlegada();
 
     @POST("API/ProgramarMantenimiento")
-    Call<StandardResponse> programarMantenimiento();
+    Call<StandardResponse> programarMantenimiento(@Body ProgramarMantenimientoRequest request);
 }
