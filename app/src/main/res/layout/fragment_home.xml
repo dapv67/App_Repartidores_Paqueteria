@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="José Torres"
+                android:text="Chofer"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -58,12 +58,12 @@
                 android:text="Total de entregas:" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/textViewEntregas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="90/100"
+                android:text="0"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -82,12 +82,12 @@
                 android:text="Porcentaje de entregas:" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/textViewPorcentajeEntregas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="90"
+                android:text="0"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -107,12 +107,12 @@
                 android:text="Entregas ontime:" />
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/textViewEntregasOntime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="90/100"
+                android:text="0"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -130,12 +130,12 @@
                 android:text="Porcentaje ontime:" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/textViewPorcentajeOntime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="90"
+                android:text="0"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -154,12 +154,12 @@
                 android:text="Promedio de entregas por hora:" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/textViewEntregasHora"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="22"
+                android:text="0"
                 android:textStyle="bold" />
         </LinearLayout>
 

@@ -14,6 +14,7 @@ import logisticdelsur.com.mx.api.modelo.Transporte;
 import logisticdelsur.com.mx.api.modelo.UserModelo;
 import logisticdelsur.com.mx.api.modelo.Vector;
 import logisticdelsur.com.mx.api.requests.LoginRequest;
+import logisticdelsur.com.mx.api.responses.ResultadosMesResponse;
 import logisticdelsur.com.mx.api.responses.SalidaRutaResponse;
 import logisticdelsur.com.mx.api.responses.StandardResponse;
 import retrofit2.Call;
@@ -91,4 +92,16 @@ public interface ISalida {
 
     @GET("API/SalidaRuta")
     Call<List<SalidaRutaResponse>> getSalidaRuta(@Query("Id_usuario") Integer Id_usuario);
+
+    @GET("API/ResultadosMes")
+    Call<ResultadosMesResponse> getResultadosMes(@Query("Id_usuario") Integer Id_usuario);
+
+    @POST("API/ChecklistSalida")
+    Call<StandardResponse> registrarChecklistSalida();
+
+    @POST("API/ChecklistLlegada")
+    Call<StandardResponse> registrarChecklistLlegada();
+
+    @POST("API/ProgramarMantenimiento")
+    Call<StandardResponse> programarMantenimiento();
 }
