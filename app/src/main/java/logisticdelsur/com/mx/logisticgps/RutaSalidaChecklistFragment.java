@@ -176,7 +176,7 @@ public class RutaSalidaChecklistFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
+
         parametrosSalida     = new HashMap<>();
         listaCheckboxes      = new ArrayList<>();
         checkBox             = new CheckBox[26] ;
