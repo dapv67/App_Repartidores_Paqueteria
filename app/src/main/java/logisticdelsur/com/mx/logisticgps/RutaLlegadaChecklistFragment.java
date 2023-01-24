@@ -32,9 +32,8 @@ import java.util.Map;
 
 import logisticdelsur.com.mx.api.interfaces.ISalida;
 import logisticdelsur.com.mx.api.modelo.LlegadaRuta;
-import logisticdelsur.com.mx.api.modelo.SalidaRuta;
 import logisticdelsur.com.mx.api.requests.ProgramarMantenimientoRequest;
-import logisticdelsur.com.mx.api.responses.ResultadosMesResponse;
+import logisticdelsur.com.mx.api.requests.RegistrarLlegadaRutaRequest;
 import logisticdelsur.com.mx.api.responses.StandardResponse;
 import logisticdelsur.com.mx.api.services.ServiceHandler;
 import retrofit2.Call;
@@ -65,7 +64,6 @@ public class RutaLlegadaChecklistFragment extends Fragment {
     private Button     btnCheckLlegada     ;
 
     private List<String>         listaCheckboxes ;
-    private Map<Integer, String> parametrosSalida;
     private ServiceHandler       api             ;
 
     public RutaLlegadaChecklistFragment() {
@@ -102,9 +100,25 @@ public class RutaLlegadaChecklistFragment extends Fragment {
     private final View.OnClickListener btnRegistrarCheckLlegadaHandler = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            RegistrarLlegadaRutaRequest requestBody = new RegistrarLlegadaRutaRequest();
+            requestBody.setIdSalidaReparto(preferences.getInt("Id_salida_reparto",0));
 
+            listaCheckboxes.clear();
+            for (CheckBox box : checkBox) {
+                String id = getResources().getResourceEntryName(box.getId())
+                        .substring("llegada_".length());
+                if (box.isChecked()) {
+                    requestBody.getChecks().put(id, Boolean.TRUE);
+                } else {
+                    requestBody.getChecks().put(id, Boolean.FALSE);
+                }
+            }
+
+            Log.d("REQUEST", requestBody.toString());
             ISalida iSalida = ServiceHandler.createService();
-            Call<StandardResponse> call = iSalida.registrarChecklistLlegada();
+            Call<StandardResponse> call = iSalida.registrarChecklistLlegada(requestBody);
+
             call.enqueue(new Callback<StandardResponse>() {
                 @Override
                 public void onResponse(Call<StandardResponse> call, Response<StandardResponse> response) {
@@ -114,23 +128,12 @@ public class RutaLlegadaChecklistFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<StandardResponse> call, Throwable t) {
-                    Toast.makeText(getActivity(), "No fue posible conectar con el sistema.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Error al conectar con el sistema.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             });
-            Map<String, Boolean> checks = new HashMap<>();
-
-            listaCheckboxes.clear();
-            for(int i=0; i<checkBox.length; i++){
-                if (checkBox[i].isChecked()) {
-                    //String name = getResources().getResourceEntryName(checkBox[i].getId());
-                    listaCheckboxes.add(parametrosSalida.get(i));
-                    //checks.put(name ,Boolean.TRUE);
-                }
-            }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
             String placa = preferences.getString("placa", "");
             builder.setTitle("Programación de mantenimientos");
             builder.setMessage("¿Quieres programar un mantenimiento?\n"
@@ -144,64 +147,32 @@ public class RutaLlegadaChecklistFragment extends Fragment {
                     request.setPlaca(placa);
                     request.setIdSalidaReparto(preferences.getInt("Id_salida_reparto",0));
                     request.setIdTransporte(preferences.getInt("Id_transporte", 0));
-                    request.setIdUsuario(preferences.getInt("Id_usuario", 0));
+                    request.setIdUsuario(Integer.valueOf(preferences.getString("Id_usuario", "0")));
 
                     ISalida iSalida = ServiceHandler.createService();
                     Call<StandardResponse> call = iSalida.programarMantenimiento(request);
                     call.enqueue(new Callback<StandardResponse>() {
                         @Override
                         public void onResponse(Call<StandardResponse> call, Response<StandardResponse> response) {
-                            Log.d("Success", "Con éxito");
+                            Log.d("Success", "Con éxito mantenimiento");
                             Toast.makeText(getActivity(), "Mantenimiento registrado", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onFailure(Call<StandardResponse> call, Throwable t) {
-                            Toast.makeText(getActivity(), "No fue posible conectar con el sistema.", Toast.LENGTH_SHORT).show();
+                            Log.d("FAILURE", t.getMessage());
+                            Toast.makeText(getActivity(), "Error al conectar con el sistema.", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     });
-                    Navigation.findNavController(view).navigate(R.id.action_rutaLlegadaChecklistFragment_to_rutaMantenimientoFragment);
+                    Navigation.findNavController(view).navigate(R.id.action_rutaLlegadaChecklistFragment_to_homeFragment);
                 }
             });
             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("http://api.logisticdelsur.com.mx/")
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
 
-                    SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-                    String tiempoSalida = preferences.getString("tiempoSalida","00:00");
-                    LocalTime tiempoLlegada = LocalTime.now();
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-                    String aux = tiempoLlegada.format(formatter);
-                    String diffTiempo = String.valueOf(Integer.parseInt(aux.split(":")[1]) -  Integer.parseInt(tiempoSalida.split(":")[1]));
-                    //Toast.makeText(getContext(),"Tiempo transcurrido: "+diffTiempo+" min",Toast.LENGTH_SHORT).show();
-                    String gas = spinnerNivelGasolina.getSelectedItem().toString();
-                    String km = txtKMLlegada.getText().toString();
-                    LlegadaRuta llegadaRuta = new LlegadaRuta(gas,km,diffTiempo);
-                    ISalida iSalida   =         retrofit.create(ISalida.class);
-                    Call<LlegadaRuta> call = iSalida.setLlegadaRuta(llegadaRuta);
-                    call.enqueue(new Callback<LlegadaRuta>() {
-                        @Override
-                        public void onResponse(Call<LlegadaRuta> call, Response<LlegadaRuta> response) {
-                            if(!response.isSuccessful()){
-                                Log.d("Success","Falló");
-                                return;
-                            }
-                            Log.d("Success","Con éxito");
-                        }
-
-                        @Override
-                        public void onFailure(Call<LlegadaRuta> call, Throwable t) {
-                            Log.d("Success",t.getMessage());
-                            return;
-                        }
-                    });
-                    Toast.makeText(getActivity(), "Ruta de llegada registrada!", Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(view).navigate(R.id.action_rutaLlegadaChecklistFragment_to_homeFragment);
                 }
             });
@@ -222,7 +193,6 @@ public class RutaLlegadaChecklistFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         listaCheckboxes  = new ArrayList<>();
-        parametrosSalida = new HashMap<>();
         checkBox         = new CheckBox[26];
 
         spinnerNivelGasolina = view.findViewById(R.id.spinnerNivelGasolina)      ;
@@ -230,64 +200,35 @@ public class RutaLlegadaChecklistFragment extends Fragment {
         btnCheckLlegada      .setOnClickListener(btnRegistrarCheckLlegadaHandler);
 
         crearCheckBoxes(view);
-        createHashMap();
     }
 
     public void crearCheckBoxes(View view){
-        checkBox[0]  = view.findViewById(R.id.checkBox43);
-        checkBox[1]  = view.findViewById(R.id.checkBox44);
-        checkBox[2]  = view.findViewById(R.id.checkBox45);
-        checkBox[3]  = view.findViewById(R.id.checkBox46);
-        checkBox[4]  = view.findViewById(R.id.checkBox47);
-        checkBox[5]  = view.findViewById(R.id.checkBox48);
-        checkBox[6]  = view.findViewById(R.id.checkBox49);
-        checkBox[7]  = view.findViewById(R.id.checkBox50);
-        checkBox[8]  = view.findViewById(R.id.checkBox51);
-        checkBox[9]  = view.findViewById(R.id.checkBox52);
-        checkBox[10] = view.findViewById(R.id.checkBox53);
-        checkBox[11] = view.findViewById(R.id.checkBox54);
-        checkBox[12] = view.findViewById(R.id.checkBox55);
-        checkBox[13] = view.findViewById(R.id.checkBox56);
-        checkBox[14] = view.findViewById(R.id.checkBox57);
-        checkBox[15] = view.findViewById(R.id.checkBox58);
-        checkBox[16] = view.findViewById(R.id.checkBox59);
-        checkBox[17] = view.findViewById(R.id.checkBox60);
-        checkBox[18] = view.findViewById(R.id.checkBox61);
-        checkBox[19] = view.findViewById(R.id.checkBox62);
-        checkBox[20] = view.findViewById(R.id.checkBox63);
-        checkBox[21] = view.findViewById(R.id.checkBox64);
-        checkBox[22] = view.findViewById(R.id.checkBox65);
-        checkBox[23] = view.findViewById(R.id.checkBox66);
-        checkBox[24] = view.findViewById(R.id.checkBox67);
-        checkBox[25] = view.findViewById(R.id.checkBox68);
+        checkBox[0]  = view.findViewById(R.id.llegada_aguaEnTanqueDeRecuperacion);
+        checkBox[1]  = view.findViewById(R.id.llegada_lucesGenerales);
+        checkBox[2]  = view.findViewById(R.id.llegada_liquidoDeFrenos);
+        checkBox[3]  = view.findViewById(R.id.llegada_aceiteDeMotor);
+        checkBox[4]  = view.findViewById(R.id.llegada_nivelDeAguaEnRadiador);
+        checkBox[5]  = view.findViewById(R.id.llegada_aguaEnTanqueDeParabrisas);
+        checkBox[6]  = view.findViewById(R.id.llegada_hulesDeLimpiaParabrisas);
+        checkBox[7]  = view.findViewById(R.id.llegada_presionDeLlantas);
+        checkBox[8]  = view.findViewById(R.id.llegada_aditamientos);
+        checkBox[9]  = view.findViewById(R.id.llegada_accesorios);
+        checkBox[10] = view.findViewById(R.id.llegada_cruceta);
+        checkBox[11] = view.findViewById(R.id.llegada_gato);
+        checkBox[12] = view.findViewById(R.id.llegada_extintor);
+        checkBox[13] = view.findViewById(R.id.llegada_llantasDeRefaccion);
+        checkBox[14] = view.findViewById(R.id.llegada_candado);
+        checkBox[15] = view.findViewById(R.id.llegada_limpiezaGeneralDeUnidad);
+        checkBox[16] = view.findViewById(R.id.llegada_techo);
+        checkBox[17] = view.findViewById(R.id.llegada_puertas);
+        checkBox[18] = view.findViewById(R.id.llegada_vidrios);
+        checkBox[19] = view.findViewById(R.id.llegada_defensa);
+        checkBox[20] = view.findViewById(R.id.llegada_fascia);
+        checkBox[21] = view.findViewById(R.id.llegada_faros);
+        checkBox[22] = view.findViewById(R.id.llegada_retrovisores);
+        checkBox[23] = view.findViewById(R.id.llegada_manijasDeCamper);
+        checkBox[24] = view.findViewById(R.id.llegada_asientos);
+        checkBox[25] = view.findViewById(R.id.llegada_tablero);
     }
 
-    public void createHashMap(){
-        parametrosSalida.put(0, "Agua en tanque de recuperación");
-        parametrosSalida.put(1, "Luces generales");
-        parametrosSalida.put(2, "Liquido de frenos");
-        parametrosSalida.put(3, "Aceite de motor");
-        parametrosSalida.put(4, "Nivel de agua en radiador");
-        parametrosSalida.put(5, "Agua en tanque de parabrisas");
-        parametrosSalida.put(6, "Hules de limpia parabrisas");
-        parametrosSalida.put(7, "Presión de llantas");
-        parametrosSalida.put(8, "Aditamientos");
-        parametrosSalida.put(9, "Accesorios");
-        parametrosSalida.put(10, "Cruceta");
-        parametrosSalida.put(11, "Gato");
-        parametrosSalida.put(12, "Extintor");
-        parametrosSalida.put(13, "Llantas de refacción");
-        parametrosSalida.put(14, "Candado");
-        parametrosSalida.put(15, "Limpieza general de unidad");
-        parametrosSalida.put(16, "Techo");
-        parametrosSalida.put(17, "Puertas");
-        parametrosSalida.put(18, "Vidrios");
-        parametrosSalida.put(19, "Defensa");
-        parametrosSalida.put(20, "Fascia");
-        parametrosSalida.put(21, "Faros");
-        parametrosSalida.put(22, "Retrovisores");
-        parametrosSalida.put(23, "Manijas de camper");
-        parametrosSalida.put(24, "Asientos");
-        parametrosSalida.put(25, "Tablero");
-    }
 }

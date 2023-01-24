@@ -32,158 +32,158 @@
                 android:orientation="vertical">
 
                 <CheckBox
-                    android:id="@+id/checkBox43"
+                    android:id="@+id/llegada_aguaEnTanqueDeRecuperacion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Agua en tanque de recuperación" />
 
                 <CheckBox
-                    android:id="@+id/checkBox44"
+                    android:id="@+id/llegada_lucesGenerales"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Luces generales" />
 
                 <CheckBox
-                    android:id="@+id/checkBox45"
+                    android:id="@+id/llegada_liquidoDeFrenos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Líquido de frenos" />
 
                 <CheckBox
-                    android:id="@+id/checkBox46"
+                    android:id="@+id/llegada_aceiteDeMotor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Aceite de motor" />
 
                 <CheckBox
-                    android:id="@+id/checkBox47"
+                    android:id="@+id/llegada_nivelDeAguaEnRadiador"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Nivel de agua en radiador" />
 
                 <CheckBox
-                    android:id="@+id/checkBox48"
+                    android:id="@+id/llegada_aguaEnTanqueDeParabrisas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Agua en tanque de parabrisas" />
 
                 <CheckBox
-                    android:id="@+id/checkBox49"
+                    android:id="@+id/llegada_hulesDeLimpiaParabrisas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Hules de limpia parabrisas" />
 
                 <CheckBox
-                    android:id="@+id/checkBox50"
+                    android:id="@+id/llegada_presionDeLlantas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Presión de llantas" />
 
                 <CheckBox
-                    android:id="@+id/checkBox51"
+                    android:id="@+id/llegada_aditamientos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Aditamientos" />
 
                 <CheckBox
-                    android:id="@+id/checkBox52"
+                    android:id="@+id/llegada_accesorios"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Accesorios" />
 
                 <CheckBox
-                    android:id="@+id/checkBox53"
+                    android:id="@+id/llegada_cruceta"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Cruceta" />
 
                 <CheckBox
-                    android:id="@+id/checkBox54"
+                    android:id="@+id/llegada_gato"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Gato" />
 
                 <CheckBox
-                    android:id="@+id/checkBox55"
+                    android:id="@+id/llegada_extintor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Extintor" />
 
                 <CheckBox
-                    android:id="@+id/checkBox56"
+                    android:id="@+id/llegada_llantasDeRefaccion"
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Llantas de refacción" />
 
                 <CheckBox
-                    android:id="@+id/checkBox57"
+                    android:id="@+id/llegada_candado"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Candado" />
 
                 <CheckBox
-                    android:id="@+id/checkBox58"
+                    android:id="@+id/llegada_limpiezaGeneralDeUnidad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Limpieza general de unidad" />
 
                 <CheckBox
-                    android:id="@+id/checkBox59"
+                    android:id="@+id/llegada_techo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Techo" />
 
                 <CheckBox
-                    android:id="@+id/checkBox60"
+                    android:id="@+id/llegada_puertas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Puertas" />
 
                 <CheckBox
-                    android:id="@+id/checkBox61"
+                    android:id="@+id/llegada_vidrios"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Vidrios" />
 
                 <CheckBox
-                    android:id="@+id/checkBox62"
+                    android:id="@+id/llegada_defensa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Defensa" />
 
                 <CheckBox
-                    android:id="@+id/checkBox63"
+                    android:id="@+id/llegada_fascia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Fascia" />
 
                 <CheckBox
-                    android:id="@+id/checkBox64"
+                    android:id="@+id/llegada_faros"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Faros" />
 
                 <CheckBox
-                    android:id="@+id/checkBox65"
+                    android:id="@+id/llegada_retrovisores"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Retrovisores" />
 
                 <CheckBox
-                    android:id="@+id/checkBox66"
+                    android:id="@+id/llegada_manijasDeCamper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Manijas de camper" />
 
                 <CheckBox
-                    android:id="@+id/checkBox67"
+                    android:id="@+id/llegada_asientos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Asientos" />
 
                 <CheckBox
-                    android:id="@+id/checkBox68"
+                    android:id="@+id/llegada_tablero"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Tablero" />
