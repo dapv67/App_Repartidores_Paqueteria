@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +36,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import logisticdelsur.com.mx.api.interfaces.ISalida;
+import logisticdelsur.com.mx.api.modelo.Entrega;
 import logisticdelsur.com.mx.api.modelo.SalidaModelo;
 import logisticdelsur.com.mx.api.modelo.SalidaRuta;
+import logisticdelsur.com.mx.api.responses.SalidaRutaPaqueteResponse;
+import logisticdelsur.com.mx.api.responses.SalidaRutaResponse;
 import logisticdelsur.com.mx.api.services.ServiceHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -168,13 +172,13 @@ public class RutaSalidaFragment extends Fragment {
         @Override
         public void onClick(View view) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://api.logisticdelsur.com.mx/")
+                    .baseUrl("https://api.logisticexpressdelsur.com/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
             String ruta = preferences.getString("ruta","No hay ruta ");
-            String transporte = preferences.getString("transporte","No hay transporte ");
-            String username = preferences.getString("username","No hay username ");
+            String transporte = preferences.getString("placa","No hay transporte ");
+            String username = preferences.getString("Id_usuario","No hay username ");
 
             SharedPreferences.Editor editor = preferences.edit();
             LocalTime tiempoSalida = LocalTime.now();
@@ -195,6 +199,8 @@ public class RutaSalidaFragment extends Fragment {
                         return;
                     }
                     Log.d("Success","Con éxito");
+                    Toast.makeText(getActivity(), "Ruta de salida registrada!", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(view).navigate(R.id.action_rutaSalidaFragment_to_homeFragment);
                 }
 
                 @Override
@@ -203,15 +209,47 @@ public class RutaSalidaFragment extends Fragment {
                     return;
                 }
             });
-            Toast.makeText(getActivity(), "Ruta de salida registrada!", Toast.LENGTH_SHORT).show();
-            Navigation.findNavController(view).navigate(R.id.action_rutaSalidaFragment_to_homeFragment);
+            //Toast.makeText(getActivity(), "Ruta de salida registrada!", Toast.LENGTH_SHORT).show();
+            //Navigation.findNavController(view).navigate(R.id.action_rutaSalidaFragment_to_homeFragment);
         }
     };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_ruta_salida_checklist, container, false);
+
+
+        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        int IdSalidaReparto = preferences.getInt("Id_salida_reparto", 0);
+
+        ISalida iSalida = ServiceHandler.createService();
+        Call<List<SalidaRutaPaqueteResponse>> call = iSalida.getSalidaRutaPaquetes(IdSalidaReparto);
+        call.enqueue(new Callback<List<SalidaRutaPaqueteResponse>>() {
+            @Override
+            public void onResponse(Call<List<SalidaRutaPaqueteResponse>> call, Response<List<SalidaRutaPaqueteResponse>> response) {
+                if (response.isSuccessful()) {
+                    Log.d("success", "onResponse: " + response.body().toString());
+                    for (SalidaRutaPaqueteResponse salidaRutaPaqueteResponse : response.body()) {
+                        listaPaquetes.add(salidaRutaPaqueteResponse.getNum_guia());
+                        Log.d("Test: ","onResponse " + salidaRutaPaqueteResponse.getNum_guia());
+                    }
+                    adaptador        = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,listaPaquetes);
+                    listViewPaquetes .setAdapter(adaptador);
+                    txtTotalPaquetes .setText( "Paquetes: " + listaPaquetes.size());
+                } else {
+                    Toast.makeText(getActivity(), "No hay salida a ruta activa", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SalidaRutaPaqueteResponse>> call, Throwable t) {
+                Toast.makeText(getActivity(), "Error: No se puede establecer conexión con la BD", Toast.LENGTH_LONG).show();
+                Log.d("error", t.toString());
+                return;
+            }
+        });
+
         return inflater.inflate(R.layout.fragment_ruta_salida, container, false);
     }
     @Override
@@ -227,5 +265,6 @@ public class RutaSalidaFragment extends Fragment {
 
         btnEscanear          .setOnClickListener(btnEscanearHandler);
         listViewPaquetes     .setOnItemClickListener(listViewEliminarHandler);
+
     }
 }

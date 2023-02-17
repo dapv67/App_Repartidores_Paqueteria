@@ -117,6 +117,8 @@ public class EntregasPendientesFragment extends Fragment {
         btnSincronizarEntregasPendientes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                int IdSalidaReparto = preferences.getInt("Id_salida_reparto", 0);
                 ProgressBar progressBar = view.findViewById(R.id.progressBarPendientes);
                 progressBar.setVisibility(View.VISIBLE);
 
@@ -126,7 +128,7 @@ public class EntregasPendientesFragment extends Fragment {
                         .build();
                 ISalida iSalida = retrofit.create(ISalida.class);
 
-                Call<StandardResponse> call = iSalida.guardarEntregasBatch(entregasPendientes);
+                Call<StandardResponse> call = iSalida.guardarEntregasBatch(entregasPendientes,IdSalidaReparto);
                 call.enqueue(new Callback<StandardResponse>() {
                     @Override
                     public void onResponse(Call<StandardResponse> call, Response<StandardResponse> response) {

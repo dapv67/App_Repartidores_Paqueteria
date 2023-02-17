@@ -47,4 +47,15 @@ public class SalidaRutaResponse {
     public void setRutas(String rutas) {
         this.rutas = rutas;
     }
+
+    @Override
+    public String toString() {
+        return "SalidaRutaResponse{" +
+                "Id_salida_reparto=" + Id_salida_reparto +
+                ", Id_usuario=" + Id_usuario +
+                ", Id_transporte=" + Id_transporte +
+                ", placa='" + placa + '\'' +
+                ", rutas='" + rutas + '\'' +
+                '}';
+    }
 }

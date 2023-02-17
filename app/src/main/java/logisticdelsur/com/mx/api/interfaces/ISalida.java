@@ -18,6 +18,7 @@ import logisticdelsur.com.mx.api.requests.ProgramarMantenimientoRequest;
 import logisticdelsur.com.mx.api.requests.RegistrarLlegadaRutaRequest;
 import logisticdelsur.com.mx.api.requests.RegistrarSalidaRutaRequest;
 import logisticdelsur.com.mx.api.responses.ResultadosMesResponse;
+import logisticdelsur.com.mx.api.responses.SalidaRutaPaqueteResponse;
 import logisticdelsur.com.mx.api.responses.SalidaRutaResponse;
 import logisticdelsur.com.mx.api.responses.StandardResponse;
 import retrofit2.Call;
@@ -81,20 +82,23 @@ public interface ISalida {
             @Field("motivo")     String motivo
     );
 
-    @POST("Bodega/SalidaRuta")
+    @POST("API/SalidaRuta")
     Call<SalidaRuta> setSalidaRuta(@Body SalidaRuta salidaRuta);
 
-    @POST("Bodega/LlegadaRuta")
+    @POST("API/LlegadaRuta")
     Call<LlegadaRuta> setLlegadaRuta(@Body LlegadaRuta llegadaRuta);
 
-    @POST("Bodega/Entrega")
-    Call<StandardResponse> setEntrega(@Body Entrega entrega);
+    @POST("API/Entrega")
+    Call<StandardResponse> setEntrega(@Body Entrega entrega,@Query("Id_salida_reparto") int Id_salida_reparto);
 
-    @POST("Bodega/Entrega/Batch")
-    Call<StandardResponse> guardarEntregasBatch(@Body List<Entrega> entregas);
+    @POST("API/Entrega/Batch")
+    Call<StandardResponse> guardarEntregasBatch(@Body List<Entrega> entregas,@Query("Id_salida_reparto") int Id_salida_reparto);
 
     @GET("API/SalidaRuta")
     Call<List<SalidaRutaResponse>> getSalidaRuta(@Query("Id_usuario") Integer Id_usuario);
+
+    @GET("API/SalidaRutaPaquetes")
+    Call<List<SalidaRutaPaqueteResponse>> getSalidaRutaPaquetes(@Query("Id_salida_reparto") Integer Id_salida_reparto);
 
     @GET("API/ResultadosMes")
     Call<ResultadosMesResponse> getResultadosMes(@Query("Id_usuario") Integer Id_usuario);

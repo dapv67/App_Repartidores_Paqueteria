@@ -158,6 +158,7 @@ public class RutaSalidaChecklistFragment extends Fragment {
 
                     editor.putInt("Id_salida_reparto", salidaRutaResponse.getId_salida_reparto());
                     editor.putString("placa", salidaRutaResponse.getPlaca());
+                    editor.putString("ruta", salidaRutaResponse.getRutas());
                     editor.putInt("Id_transporte", salidaRutaResponse.getId_transporte());
 
                     editor.commit();

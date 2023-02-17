@@ -47,4 +47,5 @@ public class SalidaRuta {
     public void setPaquetes(List paquetes) {
         this.paquetes = paquetes;
     }
+
 }

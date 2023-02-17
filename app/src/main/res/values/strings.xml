@@ -18,7 +18,6 @@
     <string-array name="status">
         <item>Estatus del paquete</item>
         <item>Entregado</item>
-        <item>Animadora</item>
         <item>Visitado</item>
     </string-array>
     <string-array name="gasolina">

@@ -3,10 +3,12 @@ package logisticdelsur.com.mx.logisticgps;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -24,6 +26,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -120,17 +123,22 @@ public class EntregasFragment extends Fragment {
     }
 
     public View.OnClickListener btnRegistrarEntregaHandler = new View.OnClickListener() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onClick(View view) {
+            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            int IdSalidaReparto = preferences.getInt("Id_salida_reparto", 0);
             String status = spinnerNivelGasolina.getSelectedItem().toString();
             String paquete = (String) txtEntregaPaquete.getText();
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            String fecha = dtf.format(LocalDateTime.now());
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("https://api.logisticexpressdelsur.com/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-            Entrega entrega = new Entrega(paquete, status);
+            Entrega entrega = new Entrega(paquete, status, fecha);
             ISalida iSalida = retrofit.create(ISalida.class);
-            Call<StandardResponse> call = iSalida.setEntrega(entrega);
+            Call<StandardResponse> call = iSalida.setEntrega(entrega, IdSalidaReparto);
 
             call.enqueue(new Callback<StandardResponse>() {
                 @Override
@@ -141,13 +149,12 @@ public class EntregasFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<StandardResponse> call, Throwable t) {
-                    SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     String pendientes = preferences.getString("pendientes", "");
                     if (!pendientes.equals("")) {
                         pendientes = pendientes + ",";
                     }
-                    pendientes = pendientes + "{paquete:'" + paquete + "',status:'" + status + "'}";
+                    pendientes = pendientes + "{paquete:'" + paquete + "',status:'" + status + "',fecha:'" + fecha + "'}";
                     //Toast.makeText(getContext(),"Pendientes: "+pendientes,Toast.LENGTH_SHORT).show();
                     editor.putString("pendientes", pendientes);
                     editor.commit();

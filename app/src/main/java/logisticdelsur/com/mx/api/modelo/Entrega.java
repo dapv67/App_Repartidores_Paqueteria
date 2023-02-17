@@ -4,10 +4,12 @@ public class Entrega {
 
     private String paquete;
     private String status;
+    private String fecha;
 
-    public Entrega(String paquete, String status) {
+    public Entrega(String paquete, String status, String fecha) {
         this.paquete = paquete;
         this.status = status;
+        this.fecha = fecha;
     }
 
     public String getPaquete() {
@@ -16,6 +18,14 @@ public class Entrega {
 
     public void setPaquete(String paquete) {
         this.paquete = paquete;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
     public String getStatus() {
