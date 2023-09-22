@@ -5,6 +5,7 @@ public class UserModelo {
     private String rol;
     private String username;
     private String Id_usuario;
+    private String token;
 
     public int getId_porteo() {
         return Id_porteo;
@@ -38,12 +39,17 @@ public class UserModelo {
         Id_usuario = id_usuario;
     }
 
+    public String getToken() {
+        return token;
+    }
+
     @Override
     public String toString() {
         return "UserModelo{" +
                 "Id_porteo=" + Id_porteo +
                 ", rol='" + rol + '\'' +
                 ", username='" + username + '\'' +
+                ", token='" + token + '\'' +
                 '}';
     }
 }

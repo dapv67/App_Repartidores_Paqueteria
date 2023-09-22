@@ -1,5 +1,7 @@
 package logisticdelsur.com.mx.logisticgps;
 
+import static logisticdelsur.com.mx.logisticgps.RutaSalidaFragment.ACCESS_TOKEN;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -93,7 +95,8 @@ public class HomeFragment extends Fragment {
         SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         String idUsuario = preferences.getString("Id_usuario", "0");
 
-        Call<ResultadosMesResponse> call = iSalida.getResultadosMes(Integer.valueOf(idUsuario));
+        String accessToken = preferences.getString(ACCESS_TOKEN, "notoken");
+        Call<ResultadosMesResponse> call = iSalida.getResultadosMes(Integer.valueOf(idUsuario),"Bearer " + accessToken);
         call.enqueue(new Callback<ResultadosMesResponse>() {
             @Override
             public void onResponse(Call<ResultadosMesResponse> call, Response<ResultadosMesResponse> response) {

@@ -1,5 +1,7 @@
 package logisticdelsur.com.mx.logisticgps;
 
+import static logisticdelsur.com.mx.logisticgps.RutaSalidaFragment.ACCESS_TOKEN;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -138,7 +140,9 @@ public class EntregasFragment extends Fragment {
                     .build();
             Entrega entrega = new Entrega(paquete, status, fecha);
             ISalida iSalida = retrofit.create(ISalida.class);
-            Call<StandardResponse> call = iSalida.setEntrega(entrega, IdSalidaReparto);
+
+            String accessToken = preferences.getString(ACCESS_TOKEN, "notoken");
+            Call<StandardResponse> call = iSalida.setEntrega(entrega, IdSalidaReparto,"Bearer " +  accessToken);
 
             call.enqueue(new Callback<StandardResponse>() {
                 @Override

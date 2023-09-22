@@ -1,5 +1,7 @@
 package logisticdelsur.com.mx.logisticgps;
 
+import static logisticdelsur.com.mx.logisticgps.RutaSalidaFragment.ACCESS_TOKEN;
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -128,7 +130,8 @@ public class EntregasPendientesFragment extends Fragment {
                         .build();
                 ISalida iSalida = retrofit.create(ISalida.class);
 
-                Call<StandardResponse> call = iSalida.guardarEntregasBatch(entregasPendientes,IdSalidaReparto);
+                String accessToken = preferences.getString(ACCESS_TOKEN, "notoken");
+                Call<StandardResponse> call = iSalida.guardarEntregasBatch(entregasPendientes,IdSalidaReparto, "Bearer " + accessToken);
                 call.enqueue(new Callback<StandardResponse>() {
                     @Override
                     public void onResponse(Call<StandardResponse> call, Response<StandardResponse> response) {

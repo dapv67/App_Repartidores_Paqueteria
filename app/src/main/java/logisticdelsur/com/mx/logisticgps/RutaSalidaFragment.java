@@ -59,6 +59,7 @@ public class RutaSalidaFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final String ACCESS_TOKEN = "access_token";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -187,9 +188,11 @@ public class RutaSalidaFragment extends Fragment {
             editor.putString("tiempoSalida", aux);
             editor.commit();
 
+            String accessToken = preferences.getString(ACCESS_TOKEN, "notoken");
+
             SalidaRuta salidaRuta = new SalidaRuta(ruta,transporte,username,listaPaquetes);
             ISalida iSalida = retrofit.create(ISalida.class);
-            Call<SalidaRuta> call = iSalida.setSalidaRuta(salidaRuta);
+            Call<SalidaRuta> call = iSalida.setSalidaRuta(salidaRuta, "Bearer " + accessToken);
 
             call.enqueue(new Callback<SalidaRuta>() {
                 @Override
@@ -224,7 +227,8 @@ public class RutaSalidaFragment extends Fragment {
         int IdSalidaReparto = preferences.getInt("Id_salida_reparto", 0);
 
         ISalida iSalida = ServiceHandler.createService();
-        Call<List<SalidaRutaPaqueteResponse>> call = iSalida.getSalidaRutaPaquetes(IdSalidaReparto);
+        String accessToken = preferences.getString(ACCESS_TOKEN, "notoken");
+        Call<List<SalidaRutaPaqueteResponse>> call = iSalida.getSalidaRutaPaquetes(IdSalidaReparto,"Bearer " + accessToken);
         call.enqueue(new Callback<List<SalidaRutaPaqueteResponse>>() {
             @Override
             public void onResponse(Call<List<SalidaRutaPaqueteResponse>> call, Response<List<SalidaRutaPaqueteResponse>> response) {

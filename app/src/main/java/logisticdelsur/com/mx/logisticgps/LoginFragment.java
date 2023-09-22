@@ -1,5 +1,7 @@
 package logisticdelsur.com.mx.logisticgps;
 
+import static logisticdelsur.com.mx.logisticgps.RutaSalidaFragment.ACCESS_TOKEN;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -95,7 +97,8 @@ public class LoginFragment extends Fragment {
                         return;
                     }
                     ISalida iSalida = ServiceHandler.createService();
-                    Call<UserModelo> call = iSalida.verificarUsuarioGet(username.getText().toString(),password.getText().toString());
+                    LoginRequest loginRequest = new LoginRequest(username.getText().toString(), password.getText().toString());
+                    Call<UserModelo> call = iSalida.verificarUsuario(loginRequest);
                     call.enqueue(new Callback<UserModelo>() {
                         @Override
                         public void onResponse(Call<UserModelo> call, Response<UserModelo> response) {
@@ -104,6 +107,7 @@ public class LoginFragment extends Fragment {
                                     SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = preferences.edit();
                                     editor.putString("Id_usuario", response.body().getId_usuario());
+                                    editor.putString(ACCESS_TOKEN, response.body().getToken());
                                     editor.commit();
                                     Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_homeFragment);
                                 } else {

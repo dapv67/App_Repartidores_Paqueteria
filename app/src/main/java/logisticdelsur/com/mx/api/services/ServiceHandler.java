@@ -45,7 +45,7 @@ public class ServiceHandler {
     public List<SalidaModelo> listSalidas() {
         List<SalidaModelo> resultado = new ArrayList<>();
         ISalida iSalida = retrofit.create(ISalida.class);
-        Call<List<SalidaModelo>> call = iSalida.listSalidas();
+        Call<List<SalidaModelo>> call = iSalida.listSalidas("");
 
         call.enqueue(new Callback<List<SalidaModelo>>() {
             @Override
@@ -65,7 +65,7 @@ public class ServiceHandler {
     public List<EjemploModelo> listEjemplo() {
         List<EjemploModelo> resultado = new ArrayList<>();
         ISalida iSalida = retrofit.create(ISalida.class);
-        Call<List<EjemploModelo>> call = iSalida.listEjemplo();
+        Call<List<EjemploModelo>> call = iSalida.listEjemplo("");
         call.enqueue(new Callback<List<EjemploModelo>>() {
             @Override
             public void onResponse(Call<List<EjemploModelo>> call, Response<List<EjemploModelo>> response) {
@@ -85,7 +85,7 @@ public class ServiceHandler {
     public List<EstadosModelo> getEstados() {
         List<EstadosModelo> resultado = new ArrayList<>();
         ISalida iSalida = retrofit.create(ISalida.class);
-        Call<List<EstadosModelo>> call = iSalida.getEstados();
+        Call<List<EstadosModelo>> call = iSalida.getEstados("");
 
         call.enqueue(new Callback<List<EstadosModelo>>() {
             @Override
@@ -109,7 +109,7 @@ public class ServiceHandler {
         List<CiudadesModelo> resultado = new ArrayList<>();
         ISalida iSalida = retrofit.create(ISalida.class);
         String estado = "Colima";
-        Call<List<CiudadesModelo>> call = iSalida.getCiudades(estado);
+        Call<List<CiudadesModelo>> call = iSalida.getCiudades(estado,"");
 
         call.enqueue(new Callback<List<CiudadesModelo>>() {
             @Override
@@ -133,7 +133,7 @@ public class ServiceHandler {
         List<Transporte> resultado = new ArrayList<>();
         ISalida iSalida = retrofit.create(ISalida.class);
         String porteo = "1";
-        Call<List<Transporte>> call = iSalida.getTransportes(porteo);
+        Call<List<Transporte>> call = iSalida.getTransportes(porteo, "");
         call.enqueue(new Callback<List<Transporte>>() {
             @Override
             public void onResponse(Call<List<Transporte>> call, Response<List<Transporte>> response) {

@@ -1,5 +1,7 @@
 package logisticdelsur.com.mx.logisticgps;
 
+import static logisticdelsur.com.mx.logisticgps.RutaSalidaFragment.ACCESS_TOKEN;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -105,7 +107,8 @@ public class RutaSalidaChecklistFragment extends Fragment {
             }
 
             ISalida iSalida = ServiceHandler.createService();
-            Call<StandardResponse> call = iSalida.registrarChecklistSalida(requestBody);
+            String accessToken = preferences.getString(ACCESS_TOKEN, "notoken");
+            Call<StandardResponse> call = iSalida.registrarChecklistSalida(requestBody,"Bearer " +  accessToken);
             call.enqueue(new Callback<StandardResponse>() {
                 @Override
                 public void onResponse(Call<StandardResponse> call, Response<StandardResponse> response) {
@@ -145,7 +148,9 @@ public class RutaSalidaChecklistFragment extends Fragment {
         SharedPreferences.Editor editor = preferences.edit();
 
         ISalida iSalida = ServiceHandler.createService();
-        Call<List<SalidaRutaResponse>> call = iSalida.getSalidaRuta(Integer.parseInt(idUsuario));
+
+        String accessToken = preferences.getString(ACCESS_TOKEN, "notoken");
+        Call<List<SalidaRutaResponse>> call = iSalida.getSalidaRuta(Integer.parseInt(idUsuario), "Bearer " + accessToken);
         call.enqueue(new Callback<List<SalidaRutaResponse>>() {
             @Override
             public void onResponse(Call<List<SalidaRutaResponse>> call, Response<List<SalidaRutaResponse>> response) {

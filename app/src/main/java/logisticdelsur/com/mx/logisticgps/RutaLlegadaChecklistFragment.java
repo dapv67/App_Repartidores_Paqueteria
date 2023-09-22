@@ -1,5 +1,7 @@
 package logisticdelsur.com.mx.logisticgps;
 
+import static logisticdelsur.com.mx.logisticgps.RutaSalidaFragment.ACCESS_TOKEN;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -117,7 +119,8 @@ public class RutaLlegadaChecklistFragment extends Fragment {
 
             Log.d("REQUEST", requestBody.toString());
             ISalida iSalida = ServiceHandler.createService();
-            Call<StandardResponse> call = iSalida.registrarChecklistLlegada(requestBody);
+            String accessToken = preferences.getString(ACCESS_TOKEN, "notoken");
+            Call<StandardResponse> call = iSalida.registrarChecklistLlegada(requestBody,"Bearer " + accessToken);
 
             call.enqueue(new Callback<StandardResponse>() {
                 @Override
@@ -150,7 +153,7 @@ public class RutaLlegadaChecklistFragment extends Fragment {
                     request.setIdUsuario(Integer.valueOf(preferences.getString("Id_usuario", "0")));
 
                     ISalida iSalida = ServiceHandler.createService();
-                    Call<StandardResponse> call = iSalida.programarMantenimiento(request);
+                    Call<StandardResponse> call = iSalida.programarMantenimiento(request, "Bearer " + accessToken);
                     call.enqueue(new Callback<StandardResponse>() {
                         @Override
                         public void onResponse(Call<StandardResponse> call, Response<StandardResponse> response) {
